@@ -56,8 +56,15 @@ public class KeyInput extends KeyAdapter {
 			Game.selection = 8;
 		} else if (key == KeyEvent.VK_9) {
 			Game.selection = 9;
-		} else if (key == KeyEvent.VK_ESCAPE) {
+		} else if (key == KeyEvent.VK_0) {
 			Game.selection = 0;
+		} else if (key == KeyEvent.VK_ESCAPE) {
+			Game.selectionObject = null;
+			for (GameObject gameObject : handler.getObjects()) {
+				if (gameObject.isSelected()) {
+					gameObject.setSelected(false);
+				}
+			}
 		} else if (key == KeyEvent.VK_BACK_SPACE) {
 			if (Game.selectionObject != null && Game.selectionObject instanceof TankPolygon) {
 				final TankPolygon polygon = (TankPolygon) Game.selectionObject;

@@ -31,13 +31,17 @@ public class MouseInput extends MouseAdapter {
 				if (Game.selection == 1) {
 					handler.addObject(new Player(x - 8, y - 8, 16, 16, GameObjectType.Player));
 				} else if (Game.selection == 2) {
-					GameObject mouse = handler.pnpoly(x, y);
+					GameObject mouse;
 					//if (mouse == null) {
 						if (Game.selectionObject == null) {
-							mouse = new TankPolygon(x, y, 0, 0, GameObjectType.Polygon);
-							handler.addObject(mouse);
-							((TankPolygon) mouse).getVertx().add(x);
-							((TankPolygon) mouse).getVerty().add(y);
+							mouse = handler.pnpoly(x, y);
+							if (mouse == null) {
+								mouse = new TankPolygon(x, y, 0, 0, GameObjectType.Polygon);
+								handler.addObject(mouse);
+								((TankPolygon) mouse).getVertx().add(x);
+								((TankPolygon) mouse).getVerty().add(y);
+							}
+							mouse.setSelected(true);
 							Game.selectionObject = mouse;
 
 						} else {

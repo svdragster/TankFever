@@ -49,10 +49,11 @@ public class TankPolygon extends GameObject {
 			vertx[i] = getVertx().get(i);
 			verty[i] = getVerty().get(i);
 		}*/
-
+		if (getVertx().size() == 0 || getVerty().size() == 0) {
+			return;
+		}
 		Graphics2D g2d = (Graphics2D) g;
 		//g2d.setPaint();
-		g.setColor(new Color(0x22, 0x0, 0x0));
 		GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, getVertx().size());
 		path.moveTo(getVertx().get(0), getVerty().get(0));
 		for (int i=1; i<getVertx().size(); i++) {
@@ -60,8 +61,17 @@ public class TankPolygon extends GameObject {
 			path.quadTo(getVertx().get(i - 1), getVerty().get(i - 1), getVertx().get(i), getVerty().get(i));
 		}
 		path.closePath();
+		if (isSelected()) {
+			for (int i=0; i<getVertx().size(); i++) {
+				if (isSelected()) {
+					g.setColor(new Color(0xFF, 0xFF, 0xFF));
+					g.fillOval(getVertx().get(i) - 2, getVerty().get(i) - 2, 4, 4);
+				}
+			}
+			g.setColor(new Color(0x52, 0x12, 0x12));
+		} else {
+			g.setColor(new Color(0x22, 0x0, 0x0));
+		}
 		g2d.fill(path);
-		g.setColor(new Color(0xFF, 0xFF, 0xFF));
-		g.fillOval((int) x, (int) y, 4, 4);
 	}
 }

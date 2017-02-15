@@ -3,7 +3,7 @@ package de.svdragster.tankfever;
 import de.svdragster.tankfever.entities.DebugText;
 import de.svdragster.tankfever.entities.GameObject;
 import de.svdragster.tankfever.entities.GameObjectType;
-import de.svdragster.tankfever.entities.Player;
+import de.svdragster.tankfever.ui.UIHandler;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -26,6 +26,7 @@ public class Game extends Canvas implements Runnable {
 
 	private Random random;
 	private Handler handler;
+	private UIHandler uiHandler;
 
 	public static int selection = 0;
 	public static GameObject selectionObject = null;
@@ -36,6 +37,7 @@ public class Game extends Canvas implements Runnable {
 		new Window(WIDTH, HEIGHT, "Tank Game", this);
 
 		handler = new Handler();
+		uiHandler = new UIHandler();
 		this.addKeyListener(new KeyInput(handler));
 		this.addMouseListener(new MouseInput(handler));
 
@@ -43,7 +45,7 @@ public class Game extends Canvas implements Runnable {
 		random = new Random();
 
 		handler.addObject(new DebugText(0, 10, 0, 0, GameObjectType.Debug));
-		handler.addObject(new Player(0, 10, 32, 32, GameObjectType.Player));
+		//handler.addObject(new Player(0, 10, 32, 32, GameObjectType.Player));
 	}
 
 	public synchronized void start() {

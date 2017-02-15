@@ -3,6 +3,8 @@ package de.svdragster.tankfever;
 import de.svdragster.tankfever.entities.DebugText;
 import de.svdragster.tankfever.entities.GameObject;
 import de.svdragster.tankfever.entities.GameObjectType;
+import de.svdragster.tankfever.gamestate.GameState;
+import de.svdragster.tankfever.gamestate.MenuState;
 import de.svdragster.tankfever.ui.UIHandler;
 
 import java.awt.*;
@@ -31,6 +33,8 @@ public class Game extends Canvas implements Runnable {
 	public static int selection = 0;
 	public static GameObject selectionObject = null;
 
+	private GameState gameState;
+
 	public Game() {
 		instance = this;
 
@@ -43,6 +47,8 @@ public class Game extends Canvas implements Runnable {
 
 
 		random = new Random();
+
+		gameState = new MenuState(handler, uiHandler);
 
 		handler.addObject(new DebugText(0, 10, 0, 0, GameObjectType.Debug));
 		//handler.addObject(new Player(0, 10, 32, 32, GameObjectType.Player));
@@ -109,7 +115,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void tick() {
-		handler.tick();
+		gameState.tick();
 	}
 
 	private void render() {
@@ -124,10 +130,14 @@ public class Game extends Canvas implements Runnable {
 		g.setColor(new Color(23, 22, 46));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
-		handler.render(g);
+		gameState.render(g);
 
 		g.dispose();
 		bs.show();
+	}
+
+	public void changeState() {
+
 	}
 
 	public static void main(String args[]) {

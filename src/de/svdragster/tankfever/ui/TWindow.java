@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Sven on 15.02.2017.
  */
-public class SmallWindow extends UIObject{
+public class TWindow extends UIObject{
 
 	private List<TButton> buttons = new ArrayList<>();
 

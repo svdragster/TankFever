@@ -76,6 +76,12 @@ public class KeyInput extends KeyAdapter {
 					polygon.getVerty().removeLast();
 				}
 			}
+		} else if (key == KeyEvent.VK_DELETE) {
+			if (Game.selectionObject != null && Game.selectionObject instanceof TankPolygon) {
+				final TankPolygon polygon = (TankPolygon) Game.selectionObject;
+				handler.removeObject(polygon);
+				Game.selectionObject = null;
+			}
 		}
 	}
 

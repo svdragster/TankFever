@@ -11,7 +11,7 @@ import java.awt.*;
 public abstract class GameState {
 
 	private GameStateType type;
-	private Handler handler;
+	Handler handler;
 	private UIHandler uiHandler;
 
 	public abstract void init();

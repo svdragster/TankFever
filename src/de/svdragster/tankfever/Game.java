@@ -1,11 +1,10 @@
 package de.svdragster.tankfever;
 
-import de.svdragster.tankfever.entities.DebugText;
 import de.svdragster.tankfever.entities.GameObject;
-import de.svdragster.tankfever.entities.GameObjectType;
 import de.svdragster.tankfever.gamestate.GameState;
 import de.svdragster.tankfever.gamestate.GameStateType;
 import de.svdragster.tankfever.gamestate.MenuState;
+import de.svdragster.tankfever.gamestate.PlayState;
 import de.svdragster.tankfever.ui.UIHandler;
 
 import java.awt.*;
@@ -39,20 +38,18 @@ public class Game extends Canvas implements Runnable {
 	public Game() {
 		instance = this;
 
-		new Window(WIDTH, HEIGHT, "Tank Game", this);
-
 		handler = new Handler();
 		uiHandler = new UIHandler();
+
+		changeState(GameStateType.Menu);
+
 		this.addKeyListener(new KeyInput(handler));
 		this.addMouseListener(new MouseInput(handler));
 
-
 		random = new Random();
 
-		gameState = new MenuState(GameStateType.Menu, handler, uiHandler);
-
-		handler.addObject(new DebugText(0, 10, 0, 0, GameObjectType.Debug));
 		//handler.addObject(new Player(0, 10, 32, 32, GameObjectType.Player));
+		new Window(WIDTH, HEIGHT, "Tank Game", this);
 	}
 
 	public synchronized void start() {
@@ -140,10 +137,13 @@ public class Game extends Canvas implements Runnable {
 	public void changeState(final GameStateType type) {
 		switch (type) {
 			case Menu:
+				gameState = new MenuState(type, handler, uiHandler);
 				break;
 			case Play:
+				gameState = new PlayState(type, handler, uiHandler);
 				break;
 		}
+		gameState.init();
 	}
 
 	public static void main(String args[]) {

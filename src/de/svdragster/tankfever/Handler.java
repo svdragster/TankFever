@@ -58,7 +58,7 @@ public class Handler {
 				final TankPolygon polygon = (TankPolygon) gameObject;
 				final int nvert = polygon.getVertx().size();
 				if (nvert == 0) {
-					return null;
+					continue;
 				}
 				final int vertx[] = polygon.getVertx().stream().mapToInt(i->i).toArray();
 				final int verty[] = polygon.getVerty().stream().mapToInt(i->i).toArray();
@@ -82,7 +82,7 @@ public class Handler {
 				}
 				//printf("(%d, %d) %d, %d   %d, %d\n", testx, testy, minX, minY, maxX, maxY);
 				if (testx < minX || testx > maxX || testy < minY || testy > maxY) {
-					return null;
+					continue;
 				}
 
 				boolean inside = false;

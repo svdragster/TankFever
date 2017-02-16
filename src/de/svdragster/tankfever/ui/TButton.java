@@ -7,6 +7,10 @@ import java.awt.*;
  */
 public class TButton extends UIObject {
 
+	public TButton(int x, int y, int w, int h, boolean visible) {
+		super(x, y, w, h, visible);
+	}
+
 	@Override
 	public void tick() {
 

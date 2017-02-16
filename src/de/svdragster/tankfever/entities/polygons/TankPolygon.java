@@ -1,5 +1,6 @@
 package de.svdragster.tankfever.entities.polygons;
 
+import de.svdragster.tankfever.Game;
 import de.svdragster.tankfever.entities.GameObject;
 import de.svdragster.tankfever.entities.GameObjectType;
 
@@ -55,17 +56,18 @@ public class TankPolygon extends GameObject {
 		Graphics2D g2d = (Graphics2D) g;
 		//g2d.setPaint();
 		GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, getVertx().size());
-		path.moveTo(getVertx().get(0), getVerty().get(0));
+		path.moveTo(getVertx().get(0) * Game.zoom - Game.cameraX, getVerty().get(0) * Game.zoom - Game.cameraY);
 		for (int i=1; i<getVertx().size(); i++) {
 			//path.curveTo(getVertx().get(i - 1), getVerty().get(i - 1), getVertx().get(i), getVerty().get(i), getVertx().get(i) + 10, getVerty().get(i) + 10);
-			path.quadTo(getVertx().get(i - 1), getVerty().get(i - 1), getVertx().get(i), getVerty().get(i));
+			path.quadTo(getVertx().get(i - 1) * Game.zoom - Game.cameraX, getVerty().get(i - 1) * Game.zoom - Game.cameraY, getVertx().get(i) * Game.zoom - Game.cameraX, getVerty().get(i) * Game.zoom - Game.cameraY);
 		}
 		path.closePath();
 		if (isSelected()) {
 			for (int i=0; i<getVertx().size(); i++) {
 				if (isSelected()) {
 					g.setColor(new Color(0xFF, 0xFF, 0xFF));
-					g.fillOval(getVertx().get(i) - 2, getVerty().get(i) - 2, 4, 4);
+					g.fillOval((int) ((getVertx().get(i) - 2) * Game.zoom) - Game.cameraX, (int) ((getVerty().get(i) - 2) * Game.zoom) - Game.cameraY, (int) (4 * Game.zoom), (int) (4 * Game.zoom));
+					//g.fillOval(getVertx().get(i) - 2, getVerty().get(i) - 2, 4, 4);
 				}
 			}
 			g.setColor(new Color(0x52, 0x12, 0x12));

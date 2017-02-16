@@ -18,6 +18,10 @@ public class UIHandler {
 		this.objects = objects;
 	}
 
+	public void addObject(final UIObject object) {
+		this.objects.add(object);
+	}
+
 	public synchronized void render(final Graphics g) {
 		LinkedList<UIObject> tempObjects = new LinkedList<>();
 		tempObjects.addAll(getObjects());
@@ -43,5 +47,7 @@ public class UIHandler {
 		}
 		return null;
 	}
+
+
 
 }

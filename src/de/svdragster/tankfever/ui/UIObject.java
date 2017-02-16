@@ -7,8 +7,16 @@ import java.awt.*;
  */
 public abstract class UIObject {
 
-	private int x, y, velX, velY, w, h;
-	private boolean visible = false;
+	protected int x, y, velX, velY, w, h;
+	protected boolean visible = false;
+
+	public UIObject(int x, int y, int w, int h, boolean visible) {
+		this.x = x;
+		this.y = y;
+		this.w = w;
+		this.h = h;
+		this.visible = visible;
+	}
 
 	public abstract void tick();
 	public abstract void render(Graphics g);

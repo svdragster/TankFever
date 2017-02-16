@@ -10,9 +10,9 @@ import java.awt.*;
  */
 public abstract class GameState {
 
-	private GameStateType type;
+	GameStateType type;
 	Handler handler;
-	private UIHandler uiHandler;
+	UIHandler uiHandler;
 
 	public abstract void init();
 	public abstract void tick();

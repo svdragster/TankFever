@@ -22,6 +22,8 @@ public class Game extends Canvas implements Runnable {
 	public static final int HEIGHT = WIDTH / 12 * 9;
 
 	public static int lastFrames = 0;
+	public static float zoom = 1.5F;
+	public static int cameraX = 0, cameraY = 0;
 
 	private Thread thread;
 	private boolean running = false;

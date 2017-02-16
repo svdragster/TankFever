@@ -11,6 +11,10 @@ public class TWindow extends UIObject{
 
 	private List<TButton> buttons = new ArrayList<>();
 
+	public TWindow(int x, int y, int w, int h, boolean visible) {
+		super(x, y, w, h, visible);
+	}
+
 
 	@Override
 	public void tick() {

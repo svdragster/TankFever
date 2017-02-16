@@ -38,6 +38,19 @@ public class KeyInput extends KeyAdapter {
 				}
 			}
 		}
+		if (key == KeyEvent.VK_X) {
+			Game.zoom += 0.1F;
+		} else if (key == KeyEvent.VK_Y) {
+			Game.zoom -= 0.1F;
+		} else if (key == KeyEvent.VK_UP) {
+			moveCamera(0, -10);
+		} else if (key == KeyEvent.VK_DOWN) {
+			moveCamera(0, 10);
+		} else if (key == KeyEvent.VK_LEFT) {
+			moveCamera(-10, 0);
+		} else if (key == KeyEvent.VK_RIGHT) {
+			moveCamera(10, 0);
+		}
 		if (key == KeyEvent.VK_1) {
 			Game.selection = 1;
 		} else if (key == KeyEvent.VK_2) {
@@ -102,6 +115,27 @@ public class KeyInput extends KeyAdapter {
 					player.setaX(0);
 				}
 			}
+		}
+	}
+
+	private void move(final GameObject gameObject, final int x, final int y) {
+
+	}
+
+	private void moveAll(final int x, final int y) {
+		for (GameObject gameObject : handler.getObjects()) {
+			move(gameObject, x, y);
+		}
+	}
+
+	private void moveCamera(final int x, final int y) {
+		Game.cameraX += x;
+		if (Game.cameraX < 0) {
+			Game.cameraX = 0;
+		}
+		Game.cameraY += y;
+		if (Game.cameraY < 0) {
+			Game.cameraY = 0;
 		}
 	}
 }

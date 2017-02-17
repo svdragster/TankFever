@@ -22,7 +22,7 @@ public class MouseInput extends MouseAdapter {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		final int click = e.getButton();
-		final int x = (int) (e.getX() / Game.zoom), y = (int) (e.getY() / Game.zoom);
+		final int x = (int) (e.getX() / Game.camera.getZoom()) - Game.camera.getX(), y = (int) (e.getY() / Game.camera.getZoom()) - Game.camera.getY();
 		final GameObject clickedObject = handler.getInAABB(x, y);
 		if (click == MouseEvent.BUTTON1) {
 			if (clickedObject != null) {

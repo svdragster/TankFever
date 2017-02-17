@@ -22,7 +22,7 @@ public class DebugText extends UIObject {
 	@Override
 	public void render(Graphics g) {
 		g.setColor(new Color(143, 137, 144));
-		g.drawString(Game.lastFrames + " FPS ||| " + Game.selection + " " + (Game.selectionObject == null ? "none" : Game.selectionObject.getType().name()) + " ||| " + Game.zoom, x, y);
+		g.drawString(Game.lastFrames + " FPS ||| " + Game.selection + " " + (Game.selectionObject == null ? "none" : Game.selectionObject.getType().name()) + " ||| " + Game.camera.getZoom() + ", " + Game.camera.getZoomSpeed(), x, y);
 	}
 }
 /*if svelia.love==true

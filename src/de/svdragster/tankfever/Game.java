@@ -5,6 +5,7 @@ import de.svdragster.tankfever.gamestate.GameState;
 import de.svdragster.tankfever.gamestate.GameStateType;
 import de.svdragster.tankfever.gamestate.MenuState;
 import de.svdragster.tankfever.gamestate.PlayState;
+import de.svdragster.tankfever.ui.Camera;
 import de.svdragster.tankfever.ui.UIHandler;
 
 import java.awt.*;
@@ -22,8 +23,8 @@ public class Game extends Canvas implements Runnable {
 	public static final int HEIGHT = WIDTH / 12 * 9;
 
 	public static int lastFrames = 0;
-	public static float zoom = 1.5F;
-	public static int cameraX = 0, cameraY = 0;
+	//public static float zoom = 1.5F;
+	public static Camera camera;
 
 	private Thread thread;
 	private boolean running = false;
@@ -47,6 +48,8 @@ public class Game extends Canvas implements Runnable {
 
 		this.addKeyListener(new KeyInput(handler));
 		this.addMouseListener(new MouseInput(handler));
+		camera = new Camera(0, 0, WIDTH, HEIGHT, false);
+		uiHandler.addObject(camera);
 
 		random = new Random();
 

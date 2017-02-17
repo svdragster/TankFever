@@ -39,17 +39,17 @@ public class KeyInput extends KeyAdapter {
 			}
 		}
 		if (key == KeyEvent.VK_X) {
-			Game.zoom += 0.1F;
+			Game.camera.setZoomSpeed(0.01F);
 		} else if (key == KeyEvent.VK_Y) {
-			Game.zoom -= 0.1F;
+			Game.camera.setZoomSpeed(-0.01F);
 		} else if (key == KeyEvent.VK_UP) {
-			moveCamera(0, -10);
+			moveCamera(0, -6);
 		} else if (key == KeyEvent.VK_DOWN) {
-			moveCamera(0, 10);
+			moveCamera(0, 6);
 		} else if (key == KeyEvent.VK_LEFT) {
-			moveCamera(-10, 0);
+			moveCamera(-6, 0);
 		} else if (key == KeyEvent.VK_RIGHT) {
-			moveCamera(10, 0);
+			moveCamera(6, 0);
 		}
 		if (key == KeyEvent.VK_1) {
 			Game.selection = 1;
@@ -129,13 +129,7 @@ public class KeyInput extends KeyAdapter {
 	}
 
 	private void moveCamera(final int x, final int y) {
-		Game.cameraX += x;
-		if (Game.cameraX < 0) {
-			Game.cameraX = 0;
-		}
-		Game.cameraY += y;
-		if (Game.cameraY < 0) {
-			Game.cameraY = 0;
-		}
+		Game.camera.setMotionX(x);
+		Game.camera.setMotionY(y);
 	}
 }

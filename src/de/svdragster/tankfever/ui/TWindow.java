@@ -23,6 +23,9 @@ public class TWindow extends UIObject{
 
 	@Override
 	public void render(Graphics g) {
-
+		g.setColor(new Color(0xAA, 0xAA, 0xAA));
+		g.fillRect(x, y, w, h);
+		g.setColor(new Color(0x15, 0x15, 0x44));
+		g.fillRect(x + 3, y + 3, w - 3, h - 3);
 	}
 }

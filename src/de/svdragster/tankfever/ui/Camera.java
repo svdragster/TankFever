@@ -8,8 +8,9 @@ import java.awt.*;
 public class Camera extends UIObject {
 
 	private final double SPEED = 0.3;
+	private final double MAXSPEED = 6;
 
-	private double velX = 0, velY = 0, xx = 0, yy = 0;
+	private double velX = 0, velY = 0, xx = 0, yy = 0, directionX = 0, directionY = 0;
 
 	private float zoom = 1.0F, zoomSpeed = 0.0F;
 
@@ -19,6 +20,58 @@ public class Camera extends UIObject {
 
 	@Override
 	public void tick() {
+		if (directionX == -1) {
+			velX += -SPEED;
+			if (velX < -MAXSPEED) {
+				velX = -MAXSPEED;
+			}
+		} else if (directionX == 1) {
+			velX += SPEED;
+			if (velX > MAXSPEED) {
+				velX = MAXSPEED;
+			}
+		} else {
+			if (velX > 0) {
+				velX -= SPEED;
+			} else if (velX < 0){
+				velX += SPEED;
+			}
+			if (velX <= 0.0001 && velX >= -0.0001) {
+				velX = 0;
+			}
+		}
+		if (directionX != 0 || velX != 0) {
+			if (velX != 0) {
+				xx += velX;
+				x = (int) xx;
+			}
+		}
+		if (directionY == -1) {
+			velY += -SPEED;
+			if (velY < -MAXSPEED) {
+				velY = -MAXSPEED;
+			}
+		} else if (directionY == 1) {
+			velY += SPEED;
+			if (velY > MAXSPEED) {
+				velY = MAXSPEED;
+			}
+		} else {
+			if (velY > 0) {
+				velY -= SPEED;
+			} else if (velY < 0) {
+				velY += SPEED;
+			}
+			if (velY <= 0.0001 && velY >= -0.0001) {
+				velY = 0;
+			}
+		}
+		if (directionY != 0 || velY != 0) {
+			if (velY != 0) {
+				yy += velY;
+				y = (int) yy;
+			}
+		}
 		if (zoomSpeed != 0.0) {
 			if (zoom < 0.1F) {
 				zoomSpeed = 0;
@@ -34,30 +87,7 @@ public class Camera extends UIObject {
 				zoomSpeed = 0;
 			}
 		}
-		if (velX != 0) {
-			xx += velX;
-			if (velX > 0) {
-				velX -= SPEED;
-			} else {
-				velX += SPEED;
-			}
-			if (velX <= 0.0001 && velX >= -0.0001) {
-				velX = 0;
-			}
-			x = (int) xx;
-		}
-		if (velY != 0) {
-			yy += velY;
-			if (velY > 0) {
-				velY -= SPEED;
-			} else {
-				velY += SPEED;
-			}
-			if (velY <= 0.0001 && velY >= -0.0001) {
-				velY = 0;
-			}
-			y = (int) yy;
-		}
+
 	}
 
 	@Override
@@ -79,6 +109,22 @@ public class Camera extends UIObject {
 
 	public void setMotionY(double velY) {
 		this.velY = velY;
+	}
+
+	public double getDirectionX() {
+		return directionX;
+	}
+
+	public void setDirectionX(double directionX) {
+		this.directionX = directionX;
+	}
+
+	public double getDirectionY() {
+		return directionY;
+	}
+
+	public void setDirectionY(double directionY) {
+		this.directionY = directionY;
 	}
 
 	public float getZoom() {

@@ -1,6 +1,7 @@
 package de.svdragster.tankfever.gamestate;
 
 import de.svdragster.tankfever.Game;
+import de.svdragster.tankfever.gamestate.mapstate.EditingWindow;
 import de.svdragster.tankfever.ui.TButton;
 import de.svdragster.tankfever.ui.UIObject;
 
@@ -9,9 +10,9 @@ import java.awt.*;
 /**
  * Created by Sven on 15.02.2017.
  */
-public class MenuState extends GameState {
+public class MapState extends GameState {
 
-	public MenuState(GameStateType type) {
+	public MapState(GameStateType type) {
 		super(type);
 	}
 
@@ -25,22 +26,17 @@ public class MenuState extends GameState {
 	@Override
 	public void init() {
 		if (uiObjectList.size() == 0) {
-			addUiObject(new TButton(Game.WIDTH/2 - 100, Game.HEIGHT/2 - 100, 200, 60, true, "Continue") {
-
+			final EditingWindow window = new EditingWindow(Game.WIDTH, 0, 200, Game.HEIGHT, true);
+			final TButton button = new TButton(window.getX() - 45, window.getY() + window.getH()/2 - 45, 50, 90, true, "<") {
 				@Override
 				public void onClick() {
-					Game.getInstance().changeState(Game.getInstance().getLastGameState());
+					window.toggleExpansion();
 				}
-
-			});
-			addUiObject(new TButton(Game.WIDTH/2 - 100, Game.HEIGHT/2 + 100, 200, 60, true, "Quit") {
-
-				@Override
-				public void onClick() {
-					System.exit(0);
-				}
-
-			});
+			};
+			button.setShadowRect(false);
+			window.setHideButton(button);
+			addUiObject(window);
+			addUiObject(button);
 		} else {
 			for (UIObject uiObject : getUiObjectList()) {
 				uiObject.setVisible(true);

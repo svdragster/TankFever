@@ -12,6 +12,7 @@ public abstract class GameObject {
 	protected GameObjectType type;
 	protected double velX, velY;
 	protected boolean selected = false;
+	private boolean changed = true;
 
 	public GameObject(double x, double y, int w, int h, GameObjectType type) {
 		this.x = x;
@@ -91,5 +92,13 @@ public abstract class GameObject {
 
 	public void setSelected(boolean selected) {
 		this.selected = selected;
+	}
+
+	public boolean isChanged() {
+		return changed;
+	}
+
+	public void setChanged(boolean changed) {
+		this.changed = changed;
 	}
 }

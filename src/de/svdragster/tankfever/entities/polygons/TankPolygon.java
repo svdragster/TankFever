@@ -16,9 +16,7 @@ public class TankPolygon extends GameObject {
 	private LinkedList<Integer> vertx = new LinkedList<>();
 	private LinkedList<Integer> verty = new LinkedList<>();
 
-	public TankPolygon(double x, double y, int w, int h, GameObjectType type) {
-		super(x, y, w, h, type);
-	}
+
 
 	public LinkedList<Integer> getVertx() {
 		return vertx;
@@ -36,9 +34,38 @@ public class TankPolygon extends GameObject {
 		this.verty = verty;
 	}
 
+	private int maxX = 0;
+	private int minX = 0;
+	private int maxY = 0;
+	private int minY = 0;
+
+
+	private TerrainType terrainType = TerrainType.RIVER;
+	private TexturePaint tp;
+	private int animation = 0;
+	private int animationDirection = 1;
+	private long animationTime = 0;
+
+	public TankPolygon(double x, double y, int w, int h, GameObjectType type) {
+		super(x, y, w, h, type);
+
+	}
+
 	@Override
 	public void tick() {
-
+		if (System.currentTimeMillis() - animationTime >= 300) {
+			if (animationDirection > 0) {
+				animation++;
+			} else {
+				animation--;
+			}
+			animationTime = System.currentTimeMillis();
+		}
+		if (animation >= 3) {
+			animationDirection = -1;
+		} else if (animation <= 0) {
+			animationDirection = 1;
+		}
 	}
 
 	@Override
@@ -54,7 +81,7 @@ public class TankPolygon extends GameObject {
 		if (getVertx().size() == 0 || getVerty().size() == 0) {
 			return;
 		}
-		for (int i=0; i<getVertx().size(); i++) {
+		/*for (int i=0; i<getVertx().size(); i++) {
 			final int x = getVertx().get(i);
 			final int y = getVerty().get(i);
 			if (x >= Game.camera.getX() && x <= Game.camera.getX() + Game.camera.getW()
@@ -64,7 +91,8 @@ public class TankPolygon extends GameObject {
 			if (i == getVertx().size() - 1) {
 				return;
 			}
-		}
+		}*/
+
 		final Graphics2D g2d = (Graphics2D) g;
 		//g2d.setPaint();
 		GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, getVertx().size());
@@ -75,17 +103,69 @@ public class TankPolygon extends GameObject {
 		}
 		path.closePath();
 		if (isSelected()) {
-			for (int i=0; i<getVertx().size(); i++) {
-				if (isSelected()) {
-					g.setColor(new Color(0xFF, 0xFF, 0xFF));
-					g.fillOval((int) ((getVertx().get(i) - 2) * Game.camera.getZoom()) - Game.camera.getX(), (int) ((getVerty().get(i) - 2) * Game.camera.getZoom()) - Game.camera.getY(), (int) (4 * Game.camera.getZoom()), (int) (4 * Game.camera.getZoom()));
-					//g.fillOval(getVertx().get(i) - 2, getVerty().get(i) - 2, 4, 4);
+			if (Game.camera.getZoom() > 0.6) {
+				for (int i = 0; i < getVertx().size(); i++) {
+					if (isSelected()) {
+						g.setColor(new Color(0xFF, 0xFF, 0xFF));
+						g.fillOval((int) ((getVertx().get(i) - 2) * Game.camera.getZoom()) - Game.camera.getX(), (int) ((getVerty().get(i) - 2) * Game.camera.getZoom()) - Game.camera.getY(), (int) (4 * Game.camera.getZoom()), (int) (4 * Game.camera.getZoom()));
+						//g.fillOval(getVertx().get(i) - 2, getVerty().get(i) - 2, 4, 4);
+					}
 				}
 			}
-			g.setColor(new Color(0x52, 0x12, 0x12));
+			tp = new TexturePaint(Game.getTextureManager().getTxSandGrassMosaik(), new Rectangle(-Game.camera.getX(), -Game.camera.getY(), (int) (512*Game.camera.getZoom()), (int) (512*Game.camera.getZoom())));
+			g2d.setPaint(tp);
 		} else {
-			g.setColor(new Color(0x22, 0x0, 0x0));
+			//g.setColor(new Color(0x22, 0x0, 0x0));
+			if (terrainType == TerrainType.RIVER) {
+				tp = new TexturePaint(Game.getTextureManager().getTxWater()[animation], new Rectangle(-Game.camera.getX(), -Game.camera.getY(), (int) (256 * Game.camera.getZoom()), (int) (256 * Game.camera.getZoom())));
+			} else {
+				tp = new TexturePaint(Game.getTextureManager().getTxSandGrass(), new Rectangle(-Game.camera.getX(), -Game.camera.getY(), (int) (512 * Game.camera.getZoom()), (int) (512 * Game.camera.getZoom())));
+			}
+			g2d.setPaint(tp);
 		}
 		g2d.fill(path);
+	}
+
+	public boolean isInAABB(int x, int y) {
+		if (!isChanged()) {
+			if (x < minX || x > maxX || y < minY || y > maxY) {
+				return false;
+			}
+			return true;
+		}
+		final int nvert = getVertx().size();
+		if (nvert == 0) {
+			return false;
+		}
+		final int vertx[] = getVertx().stream().mapToInt(i->i).toArray();
+		final int verty[] = getVerty().stream().mapToInt(i->i).toArray();
+		int minX = vertx[0];
+		int maxX = vertx[0];
+		int minY = verty[0];
+		int maxY = verty[0];
+		for (int i = 1; i < nvert; i++) {
+			if (vertx[i] < minX) {
+				minX = vertx[i];
+			}
+			if (vertx[i] > maxX) {
+				maxX = vertx[i];
+			}
+			if (verty[i] < minY) {
+				minY = verty[i];
+			}
+			if (verty[i] > maxY) {
+				maxY = verty[i];
+			}
+		}
+		this.maxX = maxX;
+		this.minX = minX;
+		this.maxY = maxY;
+		this.minY = minY;
+		setChanged(false);
+		//printf("(%d, %d) %d, %d   %d, %d\n", testx, testy, minX, minY, maxX, maxY);
+		if (x < minX || x > maxX || y < minY || y > maxY) {
+			return false;
+		}
+		return true;
 	}
 }

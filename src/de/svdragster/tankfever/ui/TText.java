@@ -5,14 +5,13 @@ import java.awt.*;
 /**
  * Created by Sven on 15.02.2017.
  */
-public class TButton extends UIObject {
+public class TText extends UIObject {
 
 	private Font font = new Font("Impact", 1, 30);
 	private String text = "null";
-	private boolean shadowRect = true;
 	private boolean shadowFont = true;
 
-	public TButton(int x, int y, int w, int h, boolean visible, String text) {
+	public TText(int x, int y, int w, int h, boolean visible, String text) {
 		super(x, y, w, h, visible);
 		this.text = text;
 	}
@@ -24,16 +23,8 @@ public class TButton extends UIObject {
 
 	@Override
 	public void render(Graphics g) {
-		if (shadowRect) {
-			g.setColor(new Color(0x10, 0x10, 0x10));
-			g.fillRect(x + 5, y + 5, w, h);
-		}
-		g.setColor(new Color(0x10, 0x60, 0xA0));
-		g.fillRect(x, y, w, h);
 		g.setFont(font);
 		Graphics2D g2d = (Graphics2D) g;
-		//FontMetrics fm = g2d.getFontMetrics();
-		//int x = w - fm.stringWidth(text) - 5;
 		FontMetrics fm = g2d.getFontMetrics();
 		int x = ((w - fm.stringWidth(text)) / 2) + this.x;
 		int y = ((h - fm.getHeight()) / 2) + fm.getAscent() + this.y;
@@ -45,21 +36,8 @@ public class TButton extends UIObject {
 		g2d.drawString(text, x, y);
 	}
 
-
-	public void onClick() {
-
-	}
-
 	public void setText(final String string) {
 		this.text = string;
-	}
-
-	public boolean isShadowRect() {
-		return shadowRect;
-	}
-
-	public void setShadowRect(boolean shadowRect) {
-		this.shadowRect = shadowRect;
 	}
 
 	public boolean isShadowFont() {

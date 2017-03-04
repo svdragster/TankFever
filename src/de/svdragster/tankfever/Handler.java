@@ -60,30 +60,11 @@ public class Handler {
 				if (nvert == 0) {
 					continue;
 				}
-				final int vertx[] = polygon.getVertx().stream().mapToInt(i->i).toArray();
-				final int verty[] = polygon.getVerty().stream().mapToInt(i->i).toArray();
-				int minX = vertx[0];
-				int maxX = vertx[0];
-				int minY = verty[0];
-				int maxY = verty[0];
-				for (int i = 1; i < nvert; i++) {
-					if (vertx[i] < minX) {
-						minX = vertx[i];
-					}
-					if (vertx[i] > maxX) {
-						maxX = vertx[i];
-					}
-					if (verty[i] < minY) {
-						minY = verty[i];
-					}
-					if (verty[i] > maxY) {
-						maxY = verty[i];
-					}
-				}
-				//printf("(%d, %d) %d, %d   %d, %d\n", testx, testy, minX, minY, maxX, maxY);
-				if (testx < minX || testx > maxX || testy < minY || testy > maxY) {
+				if (!polygon.isInAABB(testx, testy)) {
 					continue;
 				}
+				final int vertx[] = polygon.getVertx().stream().mapToInt(i->i).toArray();
+				final int verty[] = polygon.getVerty().stream().mapToInt(i->i).toArray();
 
 				boolean inside = false;
 				for (int i = 0, j = nvert - 1; i < nvert; j = i++) {

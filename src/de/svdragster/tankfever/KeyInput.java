@@ -4,6 +4,7 @@ import de.svdragster.tankfever.entities.GameObject;
 import de.svdragster.tankfever.entities.GameObjectType;
 import de.svdragster.tankfever.entities.Player;
 import de.svdragster.tankfever.entities.polygons.TankPolygon;
+import de.svdragster.tankfever.gamestate.GameStateType;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -42,14 +43,18 @@ public class KeyInput extends KeyAdapter {
 			Game.camera.setZoomSpeed(0.01F);
 		} else if (key == KeyEvent.VK_Y) {
 			Game.camera.setZoomSpeed(-0.01F);
-		} else if (key == KeyEvent.VK_UP) {
-			moveCamera(0, -6);
-		} else if (key == KeyEvent.VK_DOWN) {
-			moveCamera(0, 6);
-		} else if (key == KeyEvent.VK_LEFT) {
-			moveCamera(-6, 0);
-		} else if (key == KeyEvent.VK_RIGHT) {
-			moveCamera(6, 0);
+		} else if (key == KeyEvent.VK_W) {
+			Game.camera.setDirectionY(-1);
+			//moveCamera(0, -6);
+		} else if (key == KeyEvent.VK_S) {
+			//moveCamera(0, 6);
+			Game.camera.setDirectionY(1);
+		} else if (key == KeyEvent.VK_A) {
+			//moveCamera(-6, 0);
+			Game.camera.setDirectionX(-1);
+		} else if (key == KeyEvent.VK_D) {
+			//moveCamera(6, 0);
+			Game.camera.setDirectionX(1);
 		}
 		if (key == KeyEvent.VK_1) {
 			Game.selection = 1;
@@ -72,28 +77,27 @@ public class KeyInput extends KeyAdapter {
 		} else if (key == KeyEvent.VK_0) {
 			Game.selection = 0;
 		} else if (key == KeyEvent.VK_ESCAPE) {
-			Game.selectionObject = null;
-			for (GameObject gameObject : handler.getObjects()) {
-				if (gameObject.isSelected()) {
-					gameObject.setSelected(false);
-				}
+			if (Game.getInstance().getGameState().getType() == GameStateType.Menu) {
+				Game.getInstance().changeState(Game.getInstance().getLastGameState());
+			} else {
+				Game.getInstance().changeState(GameStateType.Menu);
 			}
 		} else if (key == KeyEvent.VK_BACK_SPACE) {
-			if (Game.selectionObject != null && Game.selectionObject instanceof TankPolygon) {
-				final TankPolygon polygon = (TankPolygon) Game.selectionObject;
+			if (Game.getSelectionObject() != null && Game.getSelectionObject() instanceof TankPolygon) {
+				final TankPolygon polygon = (TankPolygon) Game.getSelectionObject();
 				if (polygon.getVertx().size() == 0) {
 					handler.removeObject(polygon);
-					Game.selectionObject = null;
+					Game.setSelectionObject(null);
 				} else {
 					polygon.getVertx().removeLast();
 					polygon.getVerty().removeLast();
 				}
 			}
 		} else if (key == KeyEvent.VK_DELETE) {
-			if (Game.selectionObject != null && Game.selectionObject instanceof TankPolygon) {
-				final TankPolygon polygon = (TankPolygon) Game.selectionObject;
+			if (Game.getSelectionObject() != null && Game.getSelectionObject() instanceof TankPolygon) {
+				final TankPolygon polygon = (TankPolygon) Game.getSelectionObject();
 				handler.removeObject(polygon);
-				Game.selectionObject = null;
+				Game.setSelectionObject(null);
 			}
 		}
 	}
@@ -101,6 +105,19 @@ public class KeyInput extends KeyAdapter {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		final int key = e.getKeyCode();
+		if (key == KeyEvent.VK_W) {
+			Game.camera.setDirectionY(0);
+			//moveCamera(0, -6);
+		} else if (key == KeyEvent.VK_S) {
+			//moveCamera(0, 6);
+			Game.camera.setDirectionY(0);
+		} else if (key == KeyEvent.VK_A) {
+			//moveCamera(-6, 0);
+			Game.camera.setDirectionX(0);
+		} else if (key == KeyEvent.VK_D) {
+			//moveCamera(6, 0);
+			Game.camera.setDirectionX(0);
+		}
 		for (GameObject gameObject : handler.getObjects()) {
 			if (gameObject.getType() == GameObjectType.Player) {
 				final Player player = (Player) gameObject;
@@ -117,6 +134,8 @@ public class KeyInput extends KeyAdapter {
 			}
 		}
 	}
+
+
 
 	private void move(final GameObject gameObject, final int x, final int y) {
 

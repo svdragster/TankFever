@@ -1,8 +1,5 @@
 package de.svdragster.tankfever.gamestate;
 
-import de.svdragster.tankfever.Handler;
-import de.svdragster.tankfever.ui.UIHandler;
-
 import java.awt.*;
 
 /**
@@ -10,8 +7,13 @@ import java.awt.*;
  */
 public class PlayState extends GameState {
 
-	public PlayState(GameStateType type, Handler handler, UIHandler uiHandler) {
-		super(type, handler, uiHandler);
+	public PlayState(GameStateType type) {
+		super(type);
+	}
+
+	@Override
+	public void vanish() {
+
 	}
 
 	@Override
@@ -21,11 +23,13 @@ public class PlayState extends GameState {
 
 	@Override
 	public void tick() {
-
+		getHandler().tick();
+		getUiHandler().tick();
 	}
 
 	@Override
 	public void render(Graphics g) {
-
+		getHandler().render(g);
+		getUiHandler().render(g);
 	}
 }

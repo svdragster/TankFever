@@ -10,6 +10,9 @@ import java.awt.*;
  */
 public class DebugText extends UIObject {
 
+
+	private Font font = new Font("Arial", 0, 12);
+
 	public DebugText(int x, int y, int w, int h, boolean visible) {
 		super(x, y, w, h, visible);
 	}
@@ -21,8 +24,9 @@ public class DebugText extends UIObject {
 
 	@Override
 	public void render(Graphics g) {
+		g.setFont(font);
 		g.setColor(new Color(143, 137, 144));
-		g.drawString(Game.lastFrames + " FPS ||| " + Game.selection + " " + (Game.selectionObject == null ? "none" : Game.selectionObject.getType().name()) + " ||| " + Game.camera.getZoom() + ", " + Game.camera.getZoomSpeed(), x, y);
+		g.drawString(Game.lastFrames + " FPS ||| " + Game.selection + " " + (Game.getSelectionObject() == null ? "none" : Game.getSelectionObject().getType().name()) + " ||| " + Game.camera.getZoom() + ", " + Game.camera.getZoomSpeed(), x, y);
 	}
 }
 /*if svelia.love==true

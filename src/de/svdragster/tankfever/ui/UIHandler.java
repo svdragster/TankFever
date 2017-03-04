@@ -22,11 +22,17 @@ public class UIHandler {
 		this.objects.add(object);
 	}
 
+	public synchronized void removeObject(final UIObject object) {
+		this.objects.remove(object);
+	}
+
 	public synchronized void render(final Graphics g) {
 		LinkedList<UIObject> tempObjects = new LinkedList<>();
 		tempObjects.addAll(getObjects());
 		for (UIObject object : tempObjects) {
-			object.render(g);
+			if (object.isVisible()) {
+				object.render(g);
+			}
 		}
 	}
 

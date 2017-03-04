@@ -5,7 +5,6 @@ package de.svdragster.tankfever.gamestate;
  */
 public enum GameStateType {
 
-	Menu(),
-	Play();
+	Menu, Map, Play, Load
 
 }

@@ -1,10 +1,8 @@
 package de.svdragster.tankfever;
 
+import de.svdragster.tankfever.entities.DebugText;
 import de.svdragster.tankfever.entities.GameObject;
-import de.svdragster.tankfever.gamestate.GameState;
-import de.svdragster.tankfever.gamestate.GameStateType;
-import de.svdragster.tankfever.gamestate.MenuState;
-import de.svdragster.tankfever.gamestate.PlayState;
+import de.svdragster.tankfever.gamestate.*;
 import de.svdragster.tankfever.ui.Camera;
 import de.svdragster.tankfever.ui.UIHandler;
 
@@ -19,7 +17,7 @@ public class Game extends Canvas implements Runnable {
 
 	private static Game instance;
 
-	public static final int WIDTH = 640;
+	public static final int WIDTH = 1000;
 	public static final int HEIGHT = WIDTH / 12 * 9;
 
 	public static int lastFrames = 0;
@@ -32,29 +30,41 @@ public class Game extends Canvas implements Runnable {
 	private Random random;
 	private Handler handler;
 	private UIHandler uiHandler;
+	private static TextureManager textureManager = new TextureManager();
 
 	public static int selection = 0;
-	public static GameObject selectionObject = null;
+	private static GameObject selectionObject = null;
 
 	private GameState gameState;
+	private GameStateType lastGameState = GameStateType.Menu;
+	private int loadProgress = 0;
+	private int maxLoadProgress = 0;
 
 	public Game() {
+		System.out.println(System.getProperty("user.dir"));
 		instance = this;
+
+		new Window(WIDTH, HEIGHT, "Tank Game", this);
 
 		handler = new Handler();
 		uiHandler = new UIHandler();
 
-		changeState(GameStateType.Menu);
 
-		this.addKeyListener(new KeyInput(handler));
-		this.addMouseListener(new MouseInput(handler));
+		uiHandler.addObject(new DebugText(0, 10, 0, 0, true));
+
+		changeState(GameStateType.Load);
+		start();
 		camera = new Camera(0, 0, WIDTH, HEIGHT, false);
 		uiHandler.addObject(camera);
+		textureManager.loadTextures();
+
+		this.addKeyListener(new KeyInput(gameState.getHandler()));
+		this.addMouseListener(new MouseInput(gameState.getHandler(), gameState.getUiHandler()));
+
 
 		random = new Random();
 
 		//handler.addObject(new Player(0, 10, 32, 32, GameObjectType.Player));
-		new Window(WIDTH, HEIGHT, "Tank Game", this);
 	}
 
 	public synchronized void start() {
@@ -140,15 +150,29 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void changeState(final GameStateType type) {
+		if (gameState != null) {
+			lastGameState = gameState.getType();
+			gameState.vanish();
+		}
 		switch (type) {
 			case Menu:
-				gameState = new MenuState(type, handler, uiHandler);
+				gameState = new MenuState(type);
 				break;
 			case Play:
-				gameState = new PlayState(type, handler, uiHandler);
+				gameState = new PlayState(type);
+				break;
+			case Map:
+				gameState = new MapState(type);
+				break;
+			case Load:
+				gameState = new LoadState(type);
 				break;
 		}
 		gameState.init();
+	}
+
+	public GameState getGameState() {
+		return gameState;
 	}
 
 	public static void main(String args[]) {
@@ -161,5 +185,58 @@ public class Game extends Canvas implements Runnable {
 
 	public static void setInstance(Game instance) {
 		Game.instance = instance;
+	}
+
+	public Handler getHandler() {
+		return handler;
+	}
+
+	public void setHandler(Handler handler) {
+		this.handler = handler;
+	}
+
+	public UIHandler getUiHandler() {
+		return uiHandler;
+	}
+
+	public void setUiHandler(UIHandler uiHandler) {
+		this.uiHandler = uiHandler;
+	}
+
+	public static GameObject getSelectionObject() {
+		return selectionObject;
+	}
+
+	public static void setSelectionObject(GameObject selectionObject) {
+		if (selectionObject != null) {
+			selectionObject.setChanged(true);
+		} else if (Game.selectionObject != null) {
+			Game.selectionObject.setChanged(true);
+		}
+		Game.selectionObject = selectionObject;
+	}
+
+	public GameStateType getLastGameState() {
+		return lastGameState;
+	}
+
+	public static TextureManager getTextureManager() {
+		return textureManager;
+	}
+
+	public int getLoadProgress() {
+		return loadProgress;
+	}
+
+	public void setLoadProgress(int loadProgress) {
+		this.loadProgress = loadProgress;
+	}
+
+	public int getMaxLoadProgress() {
+		return maxLoadProgress;
+	}
+
+	public void setMaxLoadProgress(int maxLoadProgress) {
+		this.maxLoadProgress = maxLoadProgress;
 	}
 }

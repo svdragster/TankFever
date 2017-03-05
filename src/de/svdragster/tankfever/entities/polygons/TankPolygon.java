@@ -16,8 +16,6 @@ public class TankPolygon extends GameObject {
 	private LinkedList<Integer> vertx = new LinkedList<>();
 	private LinkedList<Integer> verty = new LinkedList<>();
 
-
-
 	public LinkedList<Integer> getVertx() {
 		return vertx;
 	}
@@ -39,7 +37,6 @@ public class TankPolygon extends GameObject {
 	private int maxY = 0;
 	private int minY = 0;
 
-
 	private TerrainType terrainType = TerrainType.RIVER;
 	private TexturePaint tp;
 	private int animation = 0;
@@ -48,7 +45,12 @@ public class TankPolygon extends GameObject {
 
 	public TankPolygon(double x, double y, int w, int h, GameObjectType type) {
 		super(x, y, w, h, type);
+		this.terrainType = Game.getTextureManager().getSelectedTerrainType();
+	}
 
+	public TankPolygon(double x, double y, int w, int h, GameObjectType type, TerrainType terrainType) {
+		super(x, y, w, h, type);
+		this.terrainType = terrainType;
 	}
 
 	@Override
@@ -112,7 +114,11 @@ public class TankPolygon extends GameObject {
 					}
 				}
 			}
-			tp = new TexturePaint(Game.getTextureManager().getTxSandGrassMosaik(), new Rectangle(-Game.camera.getX(), -Game.camera.getY(), (int) (512*Game.camera.getZoom()), (int) (512*Game.camera.getZoom())));
+			if (terrainType == TerrainType.RIVER) {
+				tp = new TexturePaint(Game.getTextureManager().getTxWaterMosaik(), new Rectangle(-Game.camera.getX(), -Game.camera.getY(), (int) (512 * Game.camera.getZoom()), (int) (512 * Game.camera.getZoom())));
+			} else {
+				tp = new TexturePaint(Game.getTextureManager().getTxSandGrassMosaik(), new Rectangle(-Game.camera.getX(), -Game.camera.getY(), (int) (512 * Game.camera.getZoom()), (int) (512 * Game.camera.getZoom())));
+			}
 			g2d.setPaint(tp);
 		} else {
 			//g.setColor(new Color(0x22, 0x0, 0x0));

@@ -53,9 +53,10 @@ public abstract class GameState {
 		return Game.getInstance().getUiHandler();
 	}
 
-	public void addUiObject(final UIObject object) {
+	public UIObject addUiObject(final UIObject object) {
 		uiObjectList.add(object);
 		getUiHandler().addObject(object);
+		return object;
 	}
 
 	public void addGameObject(final GameObject object) {

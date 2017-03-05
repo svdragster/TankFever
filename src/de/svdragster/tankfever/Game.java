@@ -17,8 +17,8 @@ public class Game extends Canvas implements Runnable {
 
 	private static Game instance;
 
-	public static final int WIDTH = 1000;
-	public static final int HEIGHT = WIDTH / 12 * 9;
+	public static final int WIDTH = 1600;
+	public static final int HEIGHT = WIDTH / 16 * 9;
 
 	public static int lastFrames = 0;
 	//public static float zoom = 1.5F;
@@ -41,7 +41,6 @@ public class Game extends Canvas implements Runnable {
 	private int maxLoadProgress = 0;
 
 	public Game() {
-		System.out.println(System.getProperty("user.dir"));
 		instance = this;
 
 		new Window(WIDTH, HEIGHT, "Tank Game", this);
@@ -53,8 +52,8 @@ public class Game extends Canvas implements Runnable {
 		uiHandler.addObject(new DebugText(0, 10, 0, 0, true));
 
 		changeState(GameStateType.Load);
-		start();
 		camera = new Camera(0, 0, WIDTH, HEIGHT, false);
+		start();
 		uiHandler.addObject(camera);
 		textureManager.loadTextures();
 
@@ -142,7 +141,13 @@ public class Game extends Canvas implements Runnable {
 
 		g.setColor(new Color(23, 22, 46));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-
+		if (getTextureManager().getTxSandGrass() != null) {
+			final Graphics2D g2d = (Graphics2D) g;
+			g2d.setPaint(new TexturePaint(getTextureManager().getTxSandGrass(), new Rectangle(-Game.camera.getX(), -Game.camera.getY(), (int) (512 * Game.camera.getZoom()), (int) (512 * Game.camera.getZoom()))));
+			g.fillRect(-Game.camera.getX(), -Game.camera.getY(), (int) (1000 * Game.camera.getZoom()), (int) (1000 * Game.camera.getZoom()));
+		}
+		g.setColor(new Color(0xAA, 0, 0));
+		g.drawRect(- Game.camera.getX(), - Game.camera.getY(), (int) (1000 * Game.camera.getZoom()), (int) (1000 * Game.camera.getZoom()));
 		gameState.render(g);
 
 		g.dispose();

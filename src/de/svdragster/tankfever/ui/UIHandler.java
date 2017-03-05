@@ -19,7 +19,13 @@ public class UIHandler {
 	}
 
 	public void addObject(final UIObject object) {
-		this.objects.add(object);
+		if (object instanceof TButton) {
+			this.objects.add(object);
+		} else if (object instanceof TWindow) {
+			this.objects.add(0, object);
+		} else {
+			this.objects.add(object);
+		}
 	}
 
 	public synchronized void removeObject(final UIObject object) {
@@ -43,7 +49,9 @@ public class UIHandler {
 	}
 
 	public UIObject getInAABB(int x, int y) {
-		for (UIObject object : getObjects()) {
+		//for (UIObject object : getObjects()) {
+		for (int i=getObjects().size()-1; i>=0; i--) {
+			final UIObject object = getObjects().get(i);
 			if (object.isVisible()) {
 				if (x >= object.getX() && x <= object.getX() + object.getW()
 						&& y >= object.getY() && y <= object.getY() + object.getH()) {

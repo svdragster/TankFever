@@ -88,9 +88,9 @@ class MouseWheel implements MouseWheelListener {
 	public void mouseWheelMoved(final MouseWheelEvent e) {
 		int notches = e.getWheelRotation();
 		if (notches < 0) {
-			Game.camera.setZoomSpeed(0.012F);
+			Game.camera.setZoomSpeed(0.015F);
 		} else {
-			Game.camera.setZoomSpeed(-0.012F);
+			Game.camera.setZoomSpeed(-0.015F);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package de.svdragster.tankfever;
 
+import de.svdragster.tankfever.entities.polygons.TerrainType;
 import de.svdragster.tankfever.gamestate.GameStateType;
 
 import javax.imageio.ImageIO;
@@ -12,15 +13,17 @@ import java.io.IOException;
  */
 public class TextureManager {
 
+	private TerrainType selectedTerrainType = TerrainType.GRASS_SAND;
+
 	private BufferedImage txSandGrass;
 	private BufferedImage txSandGrassMosaik;
 	private BufferedImage[] txWater;
+	private BufferedImage txWaterMosaik;
 
 	public void loadTextures() {
 		Game game = Game.getInstance();
 		try {
-			System.out.println("start");
-			game.setMaxLoadProgress(6);
+			game.setMaxLoadProgress(8);
 			game.setLoadProgress(0);
 			txSandGrass = ImageIO.read(new File("resources/sand_grass_dark2.jpg"));
 			game.setLoadProgress(game.getLoadProgress() + 1);
@@ -34,9 +37,13 @@ public class TextureManager {
 			txWater[2] = ImageIO.read(new File("resources/water3.jpg"));
 			game.setLoadProgress(game.getLoadProgress() + 1);
 			txWater[3] = ImageIO.read(new File("resources/water4.jpg"));
+			game.setLoadProgress(game.getLoadProgress() + 1);
+			txWaterMosaik = ImageIO.read(new File("resources/water_mosaik.jpg"));
 			game.setLoadProgress(game.getMaxLoadProgress());
 		} catch (IOException e) {
+			System.err.println("Could not load all textures: " + e.getMessage());
 			e.printStackTrace();
+			System.exit(1);
 		}
 		if (Game.getInstance().getGameState().getType() == GameStateType.Load) {
 			Game.getInstance().changeState(GameStateType.Map);
@@ -53,5 +60,22 @@ public class TextureManager {
 
 	public BufferedImage[] getTxWater() {
 		return txWater;
+	}
+
+	public TerrainType getSelectedTerrainType() {
+		return selectedTerrainType;
+	}
+
+	public BufferedImage getTxWaterMosaik() {
+		return txWaterMosaik;
+	}
+
+	public void setSelectedTerrainType(TerrainType selectedTerrainType) {
+		this.selectedTerrainType = selectedTerrainType;
+	}
+
+	public BufferedImage createMap(final Handler handler) {
+		final BufferedImage bufferedImage = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_RGB);
+		return bufferedImage;
 	}
 }

@@ -28,17 +28,25 @@ public class EditingWindow extends TWindow {
 			if (xx < w) {
 				xx += 8;
 				x = Game.WIDTH - (int) xx;
+				hideButton.setX(x - 45);
+				updateButtons(x);
 			} else {
 				xx = w;
 				x = Game.WIDTH - w;
+				hideButton.setX(x - 45);
+				updateButtons(x);
 			}
 		} else {
 			if (xx > 0) {
 				xx -= 8;
 				x = Game.WIDTH - (int) xx;
+				hideButton.setX(x - 45);
+				updateButtons(x);
 			} else {
 				xx = 0.0;
 				x = Game.WIDTH;
+				hideButton.setX(x - 45);
+				updateButtons(x);
 			}
 		}
 	}
@@ -49,8 +57,7 @@ public class EditingWindow extends TWindow {
 		g.fillRect(x - 50/* - (int) xx*/, y + h/2 - 50, 50, 100);
 		g.fillRect(x/* - (int) xx*/, y, w, h);
 		g.setColor(new Color(0x15, 0x15, 0x44));
-		g.fillRect(x + 5/* - (int) xx*/, y + 5, w - 5, h - 5);
-		hideButton.setX(x - 45/* - (int) xx*/);
+		g.fillRect(x + 5/* - (int) xx*/, y + 5, w - 10, h - 10);
 	}
 
 	public TButton getHideButton() {
@@ -72,5 +79,16 @@ public class EditingWindow extends TWindow {
 
 	public boolean isExpanded() {
 		return expanded;
+	}
+
+	public void updateButtons(int x) {
+		int r, c;
+		for (int i=0; i<getButtons().size(); i++) {
+			final TButton button = getButtons().get(i);
+			r = i/3;
+			c = i%3;
+			button.setX(12 + x + c*60);
+			button.setY(10 + r*60);
+		}
 	}
 }

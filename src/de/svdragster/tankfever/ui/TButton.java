@@ -7,14 +7,21 @@ import java.awt.*;
  */
 public class TButton extends UIObject {
 
-	private Font font = new Font("Impact", 1, 30);
-	private String text = "null";
-	private boolean shadowRect = true;
-	private boolean shadowFont = true;
+	Font font;
+	String text = "null";
+	boolean shadowRect = true;
+	boolean shadowFont = true;
 
 	public TButton(int x, int y, int w, int h, boolean visible, String text) {
 		super(x, y, w, h, visible);
 		this.text = text;
+		this.font = new Font("Impact", 1, 30);
+	}
+
+	public TButton(int x, int y, int w, int h, boolean visible, String text, int fontSize) {
+		super(x, y, w, h, visible);
+		this.text = text;
+		this.font = new Font("Impact", 1, fontSize);
 	}
 
 	@Override

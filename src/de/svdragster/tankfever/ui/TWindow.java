@@ -28,4 +28,16 @@ public class TWindow extends UIObject{
 		g.setColor(new Color(0x15, 0x15, 0x44));
 		g.fillRect(x + 3, y + 3, w - 3, h - 3);
 	}
+
+	@Override
+	public void setVisible(boolean visible) {
+		for (TButton button : buttons) {
+			button.setVisible(false);
+		}
+		super.setVisible(visible);
+	}
+
+	public List<TButton> getButtons() {
+		return buttons;
+	}
 }

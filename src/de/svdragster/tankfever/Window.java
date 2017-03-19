@@ -8,8 +8,12 @@ import java.awt.*;
  */
 public class Window extends Canvas {
 
+	private Game game;
+	private JFrame frame;
+
 	public Window(int w, int h, String title, Game game) {
-		final JFrame frame = new JFrame(title);
+		this.game = game;
+		frame = new JFrame(title);
 
 		final Dimension dimension = new Dimension(w, h);
 		frame.setPreferredSize(dimension);
@@ -21,5 +25,9 @@ public class Window extends Canvas {
 		frame.setLocationRelativeTo(null);
 		frame.add(game);
 		frame.setVisible(true);
+	}
+
+	public JFrame getFrame() {
+		return frame;
 	}
 }

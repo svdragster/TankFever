@@ -1,14 +1,13 @@
-package de.svdragster.tankfever.entities.polygons;
+package de.svdragster.tankfever;
 
 /**
- * Created by Sven on 10.02.2017.
+ * Created by Sven on 06.03.2017.
  */
-public class Point {
+public class Location {
 
-	private int x;
-	private int y;
+	private int x, y;
 
-	public Point(int x, int y) {
+	public Location(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}

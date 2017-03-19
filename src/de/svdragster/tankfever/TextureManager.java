@@ -19,11 +19,12 @@ public class TextureManager {
 	private BufferedImage txSandGrassMosaik;
 	private BufferedImage[] txWater;
 	private BufferedImage txWaterMosaik;
+	private BufferedImage txUnit;
 
 	public void loadTextures() {
 		Game game = Game.getInstance();
 		try {
-			game.setMaxLoadProgress(8);
+			game.setMaxLoadProgress(9);
 			game.setLoadProgress(0);
 			txSandGrass = ImageIO.read(new File("resources/sand_grass_dark2.jpg"));
 			game.setLoadProgress(game.getLoadProgress() + 1);
@@ -39,6 +40,8 @@ public class TextureManager {
 			txWater[3] = ImageIO.read(new File("resources/water4.jpg"));
 			game.setLoadProgress(game.getLoadProgress() + 1);
 			txWaterMosaik = ImageIO.read(new File("resources/water_mosaik.jpg"));
+			game.setLoadProgress(game.getLoadProgress() + 1);
+			txUnit = ImageIO.read(new File("resources/unit.png"));
 			game.setLoadProgress(game.getMaxLoadProgress());
 		} catch (IOException e) {
 			System.err.println("Could not load all textures: " + e.getMessage());
@@ -68,6 +71,10 @@ public class TextureManager {
 
 	public BufferedImage getTxWaterMosaik() {
 		return txWaterMosaik;
+	}
+
+	public BufferedImage getTxUnit() {
+		return txUnit;
 	}
 
 	public void setSelectedTerrainType(TerrainType selectedTerrainType) {

@@ -8,6 +8,7 @@ public enum GameObjectType {
 	Player(),
 	Enemy(),
 	Polygon(),
+	Unit(),
 	Debug();
 
 }

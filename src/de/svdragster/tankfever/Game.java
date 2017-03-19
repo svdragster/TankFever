@@ -2,9 +2,15 @@ package de.svdragster.tankfever;
 
 import de.svdragster.tankfever.entities.DebugText;
 import de.svdragster.tankfever.entities.GameObject;
-import de.svdragster.tankfever.gamestate.*;
+import de.svdragster.tankfever.gamestate.GameState;
+import de.svdragster.tankfever.gamestate.GameStateType;
+import de.svdragster.tankfever.gamestate.LoadState;
+import de.svdragster.tankfever.gamestate.MenuState;
+import de.svdragster.tankfever.gamestate.mapstate.MapState;
+import de.svdragster.tankfever.gamestate.playstate.PlayState;
 import de.svdragster.tankfever.ui.Camera;
 import de.svdragster.tankfever.ui.UIHandler;
+import de.svdragster.tankfever.units.UnitManager;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -25,14 +31,17 @@ public class Game extends Canvas implements Runnable {
 	public static Camera camera;
 
 	private Thread thread;
-	private boolean running = false;
+	public boolean running = false;
+
+	private Renderer renderer;
 
 	private Random random;
 	private Handler handler;
 	private UIHandler uiHandler;
+	private UnitManager unitManager;
 	private static TextureManager textureManager = new TextureManager();
 
-	public static int selection = 0;
+	public static int selection = 3;
 	private static GameObject selectionObject = null;
 
 	private GameState gameState;
@@ -40,10 +49,18 @@ public class Game extends Canvas implements Runnable {
 	private int loadProgress = 0;
 	private int maxLoadProgress = 0;
 
+	private boolean finishedStartup = false;
+
+	public MouseInput mouseInput;
+
+	private Window window;
+
 	public Game() {
 		instance = this;
 
-		new Window(WIDTH, HEIGHT, "Tank Game", this);
+		this.window = new Window(WIDTH, HEIGHT, "", this);
+
+		unitManager = new UnitManager(this);
 
 		handler = new Handler();
 		uiHandler = new UIHandler();
@@ -53,15 +70,28 @@ public class Game extends Canvas implements Runnable {
 
 		changeState(GameStateType.Load);
 		camera = new Camera(0, 0, WIDTH, HEIGHT, false);
+		this.renderer = new Renderer(this);
 		start();
 		uiHandler.addObject(camera);
 		textureManager.loadTextures();
 
+
+		this.mouseInput = new MouseInput(gameState.getHandler(), gameState.getUiHandler());
+
 		this.addKeyListener(new KeyInput(gameState.getHandler()));
-		this.addMouseListener(new MouseInput(gameState.getHandler(), gameState.getUiHandler()));
+		this.addMouseListener(this.mouseInput);
+		this.addMouseMotionListener(new MouseMotion(this.mouseInput));
 
 
 		random = new Random();
+
+		this.finishedStartup = true;
+
+		getUnitManager().moveSelectedUnits(500, 500);
+
+		for (GameObject gameObject : handler.getObjects()) {
+			gameObject.setSelected(false);
+		}
 
 		//handler.addObject(new Player(0, 10, 32, 32, GameObjectType.Player));
 	}
@@ -103,20 +133,17 @@ public class Game extends Canvas implements Runnable {
 				tick();
 				delta--;
 			}
-
-			if (running) {
-				render();
-			}
-
-			frames++;
+			//if (running) {
+				//render();
+			//}
+			/*frames++;
 
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
 				//System.out.println("FPS --> " + frames);
 				lastFrames = frames;
 				frames = 0;
-			}
-
+			}*/
 		}
 
 		//////////////////
@@ -130,7 +157,10 @@ public class Game extends Canvas implements Runnable {
 		gameState.tick();
 	}
 
-	private void render() {
+	public void render() {
+		if (!Game.getInstance().isFinishedStartup()) {
+			return;
+		}
 		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null) {
 			this.createBufferStrategy(3);
@@ -149,6 +179,19 @@ public class Game extends Canvas implements Runnable {
 		g.setColor(new Color(0xAA, 0, 0));
 		g.drawRect(- Game.camera.getX(), - Game.camera.getY(), (int) (1000 * Game.camera.getZoom()), (int) (1000 * Game.camera.getZoom()));
 		gameState.render(g);
+
+		if (this.mouseInput.getMouseHold() != 0) {
+			if (mouseInput.getMouseHoldPos() != null) {
+				g.setColor(new Color(0xFF, 0xFF, 0xFF));
+				//final int x = (int) ((mouseInput.getMouseHoldPos().getX() + Game.camera.getX()) / Game.camera.getZoom()), y = (int) ((mouseInput.getMouseHoldPos().getY() + Game.camera.getY()) / Game.camera.getZoom());
+				//g.drawRect(mouseInput.getMouseHoldPos().getX(), mouseInput.getMouseHoldPos().getY(), mouseInput.getMouseHoldStartPos().getX() - mouseInput.getMouseHoldPos().getX(), mouseInput.getMouseHoldStartPos().getY() - mouseInput.getMouseHoldPos().getY());
+				int maxX = Math.max(mouseInput.getMouseHoldPos().getX(), mouseInput.getMouseHoldStartPos().getX());
+				int maxY = Math.max(mouseInput.getMouseHoldPos().getY(), mouseInput.getMouseHoldStartPos().getY());
+				int minX = Math.min(mouseInput.getMouseHoldPos().getX(), mouseInput.getMouseHoldStartPos().getX());
+				int minY = Math.min(mouseInput.getMouseHoldPos().getY(), mouseInput.getMouseHoldStartPos().getY());
+				g.drawRect(minX, minY, maxX - minX, maxY - minY);
+			}
+		}
 
 		g.dispose();
 		bs.show();
@@ -243,5 +286,13 @@ public class Game extends Canvas implements Runnable {
 
 	public void setMaxLoadProgress(int maxLoadProgress) {
 		this.maxLoadProgress = maxLoadProgress;
+	}
+
+	public UnitManager getUnitManager() {
+		return unitManager;
+	}
+
+	public boolean isFinishedStartup() {
+		return finishedStartup;
 	}
 }

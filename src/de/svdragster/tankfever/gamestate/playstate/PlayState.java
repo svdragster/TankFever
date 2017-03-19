@@ -1,8 +1,9 @@
-package de.svdragster.tankfever.gamestate;
+package de.svdragster.tankfever.gamestate.playstate;
 
 import de.svdragster.tankfever.Game;
 import de.svdragster.tankfever.entities.polygons.TerrainType;
-import de.svdragster.tankfever.gamestate.mapstate.EditingWindow;
+import de.svdragster.tankfever.gamestate.GameState;
+import de.svdragster.tankfever.gamestate.GameStateType;
 import de.svdragster.tankfever.ui.TButton;
 import de.svdragster.tankfever.ui.TTextureButton;
 import de.svdragster.tankfever.ui.UIObject;
@@ -12,9 +13,11 @@ import java.awt.*;
 /**
  * Created by Sven on 15.02.2017.
  */
-public class MapState extends GameState {
+public class PlayState extends GameState {
 
-	public MapState(GameStateType type) {
+
+
+	public PlayState(GameStateType type) {
 		super(type);
 	}
 
@@ -28,7 +31,7 @@ public class MapState extends GameState {
 	@Override
 	public void init() {
 		if (uiObjectList.size() == 0) {
-			final EditingWindow window = new EditingWindow(Game.WIDTH, 0, 200, Game.HEIGHT - 28, true);
+			final BuildingWindow window = new BuildingWindow(Game.WIDTH, 0, 300, Game.HEIGHT - 28, true);
 			final TButton button = new TButton(window.getX() - 45, window.getY() + window.getH()/2 - 45, 50, 90, true, "<") {
 				@Override
 				public void onClick() {

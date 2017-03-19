@@ -1,13 +1,11 @@
 package de.svdragster.tankfever;
 
-import de.svdragster.tankfever.entities.polygons.Point;
-
 /**
  * Created by Sven on 11.02.2017.
  */
 public class Geo {
 
-	/*public static Point[] smoothLine(Point a, Point b, Point toSmooth, double radius) {
+	/*public static Location[] smoothLine(Location a, Location b, Location toSmooth, double radius) {
 		double angle = Math.atan2(toSmooth.getY() - a.getY(), toSmooth.getX() - a.getX()) - Math.atan2(toSmooth.getY() - b.getY(), toSmooth.getX() - b.getX());
 		double PC1, PC2;
 		double segment = PC1 = PC2 = radius / Math.abs(Math.tan(angle / 2));
@@ -38,10 +36,10 @@ public class Geo {
 
 			points[i] = new PointF(pointX, pointY);
 		}
-		return new Point(0, 0);
+		return new Location(0, 0);
 	}*/
 
-	public static Point[] smoothLine(Point a, Point b, Point edge) {
+	public static Location[] smoothLine(Location a, Location b, Location edge) {
 		return null;
 	}
 

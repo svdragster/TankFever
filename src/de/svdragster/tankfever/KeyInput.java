@@ -23,7 +23,11 @@ public class KeyInput extends KeyAdapter {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		final int key = e.getKeyCode();
-
+		if (key == KeyEvent.VK_M) {
+			Game.getInstance().getSoundManager().setVolume(3.0F);
+		} else if (key == KeyEvent.VK_N) {
+			Game.getInstance().getSoundManager().setVolume(-3.0F);
+		}
 		for (GameObject gameObject : handler.getObjects()) {
 			if (gameObject.getType() == GameObjectType.Player) {
 				final Player player = (Player) gameObject;

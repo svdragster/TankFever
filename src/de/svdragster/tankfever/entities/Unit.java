@@ -61,14 +61,16 @@ public class Unit extends GameObject {
 		} else if (x + w > Game.WIDTH || y + h > Game.HEIGHT) {
 			return;
 		}
-		g.setColor(new Color(0xA0, 0, 0));
 		if (Game.camera.getZoom() <= 0.85) {
+			g.setColor(new Color(0xA0, 0, 0));
 			g.fillRect((x + 5), (y + 5), (int) ((w-5) * Game.camera.getZoom()), (int) ((h-5) * Game.camera.getZoom()));
 			//System.out.println(">>>>>" + (int) (x * Game.camera.getZoom() - Game.camera.getX()) + "\t\t" + (int) (y * Game.camera.getZoom() - Game.camera.getY()));
 		} else {
 			if (Game.getTextureManager().getTxUnit() == null) {
 				return;
 			}
+			g.setColor(new Color(0x0, 0, 0, 0x40));
+			g.fillRect((int) ((getX() + 1) * Game.camera.getZoom() - Game.camera.getX()), (int) ((getY() + 4) * Game.camera.getZoom() - Game.camera.getY()), (int) ((w-5) * Game.camera.getZoom()), (int) ((h-5) * Game.camera.getZoom()));
 			//AffineTransform affineTransform = new AffineTransform();
 			//affineTransform.translate(x, y);
 			final Graphics2D g2d = (Graphics2D) g;

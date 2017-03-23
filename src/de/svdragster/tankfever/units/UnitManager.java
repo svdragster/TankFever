@@ -4,6 +4,7 @@ import de.svdragster.tankfever.Game;
 import de.svdragster.tankfever.Location;
 import de.svdragster.tankfever.entities.GameObject;
 import de.svdragster.tankfever.entities.Unit;
+import de.svdragster.tankfever.ui.clickanimations.MoveUnitAnimation;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -20,6 +21,7 @@ public class UnitManager {
 	}
 
 	public void moveSelectedUnits(int x, int y) {
+		game.getUiHandler().addObject(new MoveUnitAnimation(x, y, 30, 30, true));
 		Queue<Unit> selectedUnits = new LinkedList<>();
 		for (GameObject gameObject : game.getHandler().getObjects()) {
 			if (gameObject.isSelected()) {

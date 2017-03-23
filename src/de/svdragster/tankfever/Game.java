@@ -40,6 +40,7 @@ public class Game extends Canvas implements Runnable {
 	private UIHandler uiHandler;
 	private UnitManager unitManager;
 	private static TextureManager textureManager = new TextureManager();
+	private SoundManager soundManager;
 
 	public static int selection = 3;
 	private static GameObject selectionObject = null;
@@ -73,19 +74,17 @@ public class Game extends Canvas implements Runnable {
 		this.renderer = new Renderer(this);
 		start();
 		uiHandler.addObject(camera);
+		this.mouseInput = new MouseInput(this.handler, this.uiHandler);
+		this.addKeyListener(new KeyInput(this.handler));
+		this.addMouseListener(this.mouseInput);
+		this.addMouseMotionListener(new MouseMotion(this.mouseInput));
+		this.finishedStartup = true;
+		this.soundManager = new SoundManager();
 		textureManager.loadTextures();
 
 
-		this.mouseInput = new MouseInput(gameState.getHandler(), gameState.getUiHandler());
-
-		this.addKeyListener(new KeyInput(gameState.getHandler()));
-		this.addMouseListener(this.mouseInput);
-		this.addMouseMotionListener(new MouseMotion(this.mouseInput));
-
 
 		random = new Random();
-
-		this.finishedStartup = true;
 
 		getUnitManager().moveSelectedUnits(500, 500);
 
@@ -117,8 +116,8 @@ public class Game extends Canvas implements Runnable {
 		final double amountOfTicks = 60.0;
 		final double ns = 1_000_000_000 / amountOfTicks;
 		double delta = 0;
-		long timer = System.currentTimeMillis();
-		int frames = 0;
+		//long timer = System.currentTimeMillis();
+		//int frames = 0;
 
 		//////////////////
 		// de.svdragster.tankfever.Game Loop Start
@@ -294,5 +293,9 @@ public class Game extends Canvas implements Runnable {
 
 	public boolean isFinishedStartup() {
 		return finishedStartup;
+	}
+
+	public SoundManager getSoundManager() {
+		return soundManager;
 	}
 }

@@ -23,7 +23,7 @@ public abstract class GameObject {
 	}
 
 	public abstract void tick();
-	public abstract void render(Graphics g);
+	public abstract boolean render(Graphics2D g);
 
 	public double getX() {
 		return x;

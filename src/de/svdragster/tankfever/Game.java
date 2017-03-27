@@ -79,7 +79,7 @@ public class Game extends Canvas implements Runnable {
 		this.addMouseListener(this.mouseInput);
 		this.addMouseMotionListener(new MouseMotion(this.mouseInput));
 		this.finishedStartup = true;
-		this.soundManager = new SoundManager();
+		//this.soundManager = new SoundManager();
 		textureManager.loadTextures();
 
 
@@ -166,13 +166,12 @@ public class Game extends Canvas implements Runnable {
 			return;
 		}
 
-		Graphics g = bs.getDrawGraphics();
+		final Graphics2D g = (Graphics2D) bs.getDrawGraphics();
 
 		g.setColor(new Color(23, 22, 46));
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		if (getTextureManager().getTxSandGrass() != null) {
-			final Graphics2D g2d = (Graphics2D) g;
-			g2d.setPaint(new TexturePaint(getTextureManager().getTxSandGrass(), new Rectangle(-Game.camera.getX(), -Game.camera.getY(), (int) (512 * Game.camera.getZoom()), (int) (512 * Game.camera.getZoom()))));
+			g.setPaint(new TexturePaint(getTextureManager().getTxSandGrass(), new Rectangle(-Game.camera.getX(), -Game.camera.getY(), (int) (512 * Game.camera.getZoom()), (int) (512 * Game.camera.getZoom()))));
 			g.fillRect(-Game.camera.getX(), -Game.camera.getY(), (int) (1000 * Game.camera.getZoom()), (int) (1000 * Game.camera.getZoom()));
 		}
 		g.setColor(new Color(0xAA, 0, 0));

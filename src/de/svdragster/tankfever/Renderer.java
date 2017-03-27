@@ -12,6 +12,7 @@ public class Renderer extends Thread {
 	public Renderer(Game game) {
 		this.game = game;
 		System.out.println("starting");
+		//System.setProperty("sun.java2d.opengl","True");
 		this.start();
 	}
 
@@ -24,7 +25,7 @@ public class Renderer extends Thread {
 		}
 		while (this.game.running) {
 			long now = System.currentTimeMillis();
-			if (now - this.milli >= 16) {
+			if (now - this.milli >= 7) {
 				this.game.render();
 				this.milli = now;
 				frames++;

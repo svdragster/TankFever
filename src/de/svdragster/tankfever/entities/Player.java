@@ -68,9 +68,10 @@ public class Player extends GameObject {
 	}
 
 	@Override
-	public void render(Graphics g) {
+	public boolean render(Graphics2D g) {
 		g.setColor(new Color(143, 137, 144));
 		g.drawRect((int) x, (int) y, w, h);
+		return true;
 	}
 
 	public int getaX() {

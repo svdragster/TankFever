@@ -16,6 +16,8 @@ public class Unit extends GameObject {
 	private double lastVectorX = 0;
 	private double lastVectorY = 0;
 	private double rotation = 0;
+	private int gx, gy;
+
 
 	public Unit(double x, double y, int w, int h, GameObjectType type) {
 		super(x, y, w, h, type);
@@ -24,6 +26,8 @@ public class Unit extends GameObject {
 
 	@Override
 	public void tick() {
+		gx = (int) ((getX()) * Game.camera.getZoom() - Game.camera.getX());
+		gy = (int) ((getY()) * Game.camera.getZoom() - Game.camera.getY());
 		if (destination == null) {
 			return;
 		}
@@ -50,35 +54,41 @@ public class Unit extends GameObject {
 		}
 		x += lastVectorX;
 		y += lastVectorY;
+
 	}
 
 	@Override
-	public void render(Graphics g) {
+	public boolean render(Graphics2D g) {
 		int x = (int) ((getX()) * Game.camera.getZoom() - Game.camera.getX());
 		int y = (int) ((getY()) * Game.camera.getZoom() - Game.camera.getY());
+		//int x = gx;
+		//int y = gy;
 		if (x < -w || y < -h) {
-			return;
+			return false;
 		} else if (x + w > Game.WIDTH || y + h > Game.HEIGHT) {
-			return;
+			return false;
 		}
-		if (Game.camera.getZoom() <= 0.85) {
+		if (Game.camera.getZoom() <= 1.5) {
 			g.setColor(new Color(0xA0, 0, 0));
+
 			g.fillRect((x + 5), (y + 5), (int) ((w-5) * Game.camera.getZoom()), (int) ((h-5) * Game.camera.getZoom()));
 			//System.out.println(">>>>>" + (int) (x * Game.camera.getZoom() - Game.camera.getX()) + "\t\t" + (int) (y * Game.camera.getZoom() - Game.camera.getY()));
 		} else {
 			if (Game.getTextureManager().getTxUnit() == null) {
-				return;
+				return false;
 			}
-			g.setColor(new Color(0x0, 0, 0, 0x40));
+			if (g.getColor().getBlue() != 0x40) {
+				g.setColor(new Color(0x0, 0, 0, 0x40));
+			}
 			g.fillRect((int) ((getX() + 1) * Game.camera.getZoom() - Game.camera.getX()), (int) ((getY() + 4) * Game.camera.getZoom() - Game.camera.getY()), (int) ((w-5) * Game.camera.getZoom()), (int) ((h-5) * Game.camera.getZoom()));
 			//AffineTransform affineTransform = new AffineTransform();
 			//affineTransform.translate(x, y);
-			final Graphics2D g2d = (Graphics2D) g;
 			//g2d.drawImage(Game.getTextureManager().getTxUnit(), affineTransform, null);
 			//g.fillOval((int) (x), (int) (y), (int) (w * Game.camera.getZoom()), (int) (h * Game.camera.getZoom()));
-			final TexturePaint tp = new TexturePaint(Game.getTextureManager().getTxUnit(), new Rectangle(x, y, (int) (w * Game.camera.getZoom()), (int) (h * Game.camera.getZoom())));
-			g2d.setPaint(tp);
-			g.fillRect((x), (y), (int) (w * Game.camera.getZoom()), (int) (h * Game.camera.getZoom()));
+			//final TexturePaint tp = new TexturePaint(Game.getTextureManager().getTxUnit(), new Rectangle(x, y, (int) (w * Game.camera.getZoom()), (int) (h * Game.camera.getZoom())));
+			//g.setPaint(tp);
+			//g.fillRect((x), (y), (int) (w * Game.camera.getZoom()), (int) (h * Game.camera.getZoom()));
+			g.drawImage(Game.getTextureManager().getTxUnit(), x, y, (int) (w * Game.camera.getZoom()), (int) (h * Game.camera.getZoom()), null);
 		}
 		if (isSelected()) {
 			g.setColor(new Color(0x0, 0x40, 0xA0));
@@ -86,6 +96,7 @@ public class Unit extends GameObject {
 		}
 		//g.setColor(new Color(0xFF, 0, 0));
 		//g.drawLine((int) ((x + w/2) * Game.camera.getZoom() - Game.camera.getX()), (int) ((y + h/2) * Game.camera.getZoom() - Game.camera.getY()), (int) ((destination.getX() + w/2) * Game.camera.getZoom() - Game.camera.getX()), (int) ((destination.getY() + h/2) * Game.camera.getZoom() - Game.camera.getY()));
+		return true;
 	}
 
 	public Location getDestination() {

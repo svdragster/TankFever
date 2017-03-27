@@ -71,7 +71,7 @@ public class TankPolygon extends GameObject {
 	}
 
 	@Override
-	public void render(Graphics g) {
+	public boolean render(Graphics2D g) {
 
 		//list.stream().mapToInt(i->i).toArray();
 		/*final int vertx[] = new int[getVertx().size()];
@@ -81,7 +81,7 @@ public class TankPolygon extends GameObject {
 			verty[i] = getVerty().get(i);
 		}*/
 		if (getVertx().size() == 0 || getVerty().size() == 0) {
-			return;
+			return false;
 		}
 		/*for (int i=0; i<getVertx().size(); i++) {
 			final int x = getVertx().get(i);
@@ -95,7 +95,7 @@ public class TankPolygon extends GameObject {
 			}
 		}*/
 
-		final Graphics2D g2d = (Graphics2D) g;
+		//final Graphics2D g2d = (Graphics2D) g;
 		//g2d.setPaint();
 		GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, getVertx().size());
 		path.moveTo(getVertx().get(0) * Game.camera.getZoom() - Game.camera.getX(), getVerty().get(0) * Game.camera.getZoom() - Game.camera.getY());
@@ -119,7 +119,7 @@ public class TankPolygon extends GameObject {
 			} else {
 				tp = new TexturePaint(Game.getTextureManager().getTxSandGrassMosaik(), new Rectangle(-Game.camera.getX(), -Game.camera.getY(), (int) (512 * Game.camera.getZoom()), (int) (512 * Game.camera.getZoom())));
 			}
-			g2d.setPaint(tp);
+			g.setPaint(tp);
 		} else {
 			//g.setColor(new Color(0x22, 0x0, 0x0));
 			if (terrainType == TerrainType.RIVER) {
@@ -127,9 +127,10 @@ public class TankPolygon extends GameObject {
 			} else {
 				tp = new TexturePaint(Game.getTextureManager().getTxSandGrass(), new Rectangle(-Game.camera.getX(), -Game.camera.getY(), (int) (512 * Game.camera.getZoom()), (int) (512 * Game.camera.getZoom())));
 			}
-			g2d.setPaint(tp);
+			g.setPaint(tp);
 		}
-		g2d.fill(path);
+		g.fill(path);
+		return true;
 	}
 
 	public boolean isInAABB(int x, int y) {

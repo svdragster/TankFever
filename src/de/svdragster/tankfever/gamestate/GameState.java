@@ -35,7 +35,7 @@ public abstract class GameState {
 	public abstract void vanish();
 	public abstract void init();
 	public abstract void tick();
-	public abstract void render(Graphics g);
+	public abstract void render(Graphics2D g);
 
 	public GameState(GameStateType type) {
 		this.type = type;

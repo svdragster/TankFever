@@ -50,7 +50,7 @@ public class LoadState extends GameState {
 	}
 
 	@Override
-	public void render(Graphics g) {
+	public void render(Graphics2D g) {
 		getHandler().render(g);
 		getUiHandler().render(g);
 		g.setColor(new Color(0xAA, 0xAA, 0xAA));

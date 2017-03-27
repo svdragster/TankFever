@@ -87,7 +87,7 @@ public class PlayState extends GameState {
 	}
 
 	@Override
-	public void render(Graphics g) {
+	public void render(Graphics2D g) {
 		getHandler().render(g);
 		getUiHandler().render(g);
 	}

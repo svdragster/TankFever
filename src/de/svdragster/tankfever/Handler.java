@@ -18,7 +18,7 @@ public class Handler {
 	private LinkedList<Building> buildings = new LinkedList<>();
 
 	public Handler() {
-		int max = 1_000;
+		int max = 5_000;
 		double amount = Math.sqrt(max);
 		int x = 0;
 		int y = 0;
@@ -41,7 +41,7 @@ public class Handler {
 		objects.forEach(GameObject::tick);
 	}
 
-	public synchronized void render(final Graphics g) {
+	public synchronized void render(final Graphics2D g) {
 		LinkedList<GameObject> tempObjects = new LinkedList<>();
 		tempObjects.addAll(objects);
 
@@ -55,8 +55,8 @@ public class Handler {
 		}
 		for (GameObject gameObject : tempObjects) {
 			gameObject.render(g);
-			if (gameObject instanceof Unit) {
-				if (selection) {
+			if (selection) {
+				if (gameObject instanceof Unit) {
 					gameObject.setSelected(isInAABB(gameObject, x1, y1, x2, y2));
 				}
 			}

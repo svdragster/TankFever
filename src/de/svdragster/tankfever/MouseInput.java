@@ -31,7 +31,7 @@ public class MouseInput extends MouseAdapter {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		final int click = e.getButton();
-		if (click == MouseEvent.BUTTON1) {
+		if (click == MouseEvent.BUTTON1 || click == MouseEvent.BUTTON3) {
 			mouseHold = 0;
 			final UIObject uiObject = uiHandler.getInAABB(e.getX(), e.getY());
 			if (uiObject != null) {

@@ -17,7 +17,7 @@ public class MoveUnitAnimation extends UIObject {
 	}
 
 	@Override
-	public void tick() {
+	public void tick(final double delta) {
 		currentAnim++;
 		if (currentAnim >= Game.getTextureManager().getAnimUnitMove().length * 2) {
 			Game.getInstance().getUiHandler().removeObject(this);

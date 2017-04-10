@@ -34,7 +34,7 @@ public abstract class GameState {
 
 	public abstract void vanish();
 	public abstract void init();
-	public abstract void tick();
+	public abstract void tick(final double delta);
 	public abstract void render(Graphics2D g);
 
 	public GameState(GameStateType type) {

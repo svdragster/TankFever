@@ -16,7 +16,7 @@ public class Player extends GameObject {
 	}
 
 	@Override
-	public void tick() {
+	public void tick(final double delta) {
 		if (aX != 0) {
 			if (aX == 1) {
 				if (velX == 0) {

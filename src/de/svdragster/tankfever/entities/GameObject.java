@@ -22,7 +22,7 @@ public abstract class GameObject {
 		this.type = type;
 	}
 
-	public abstract void tick();
+	public abstract void tick(final double delta);
 	public abstract boolean render(Graphics2D g);
 
 	public double getX() {

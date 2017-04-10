@@ -19,22 +19,24 @@ public class Camera extends UIObject {
 	}
 
 	@Override
-	public void tick() {
+	public void tick(final double delta) {
+		final double speed = SPEED * delta;
+		final double maxSpeed = MAXSPEED * delta;
 		if (directionX == -1) {
-			velX += -SPEED;
-			if (velX < -MAXSPEED) {
-				velX = -MAXSPEED;
+			velX += -speed;
+			if (velX < -maxSpeed) {
+				velX = -maxSpeed;
 			}
 		} else if (directionX == 1) {
-			velX += SPEED;
-			if (velX > MAXSPEED) {
-				velX = MAXSPEED;
+			velX += speed;
+			if (velX > maxSpeed) {
+				velX = maxSpeed;
 			}
 		} else {
 			if (velX > 0) {
-				velX -= SPEED;
+				velX -= speed ;
 			} else if (velX < 0){
-				velX += SPEED;
+				velX += speed ;
 			}
 			if (velX <= 0.0001 && velX >= -0.0001) {
 				velX = 0;
@@ -42,33 +44,33 @@ public class Camera extends UIObject {
 		}
 		if (directionX != 0 || velX != 0) {
 			if (velX != 0) {
-				xx += velX;
+				xx += velX ;
 				x = (int) xx;
 			}
 		}
 		if (directionY == -1) {
-			velY += -SPEED;
-			if (velY < -MAXSPEED) {
-				velY = -MAXSPEED;
+			velY += -speed ;
+			if (velY < -maxSpeed) {
+				velY = -maxSpeed;
 			}
 		} else if (directionY == 1) {
-			velY += SPEED;
-			if (velY > MAXSPEED) {
-				velY = MAXSPEED;
+			velY += speed ;
+			if (velY > maxSpeed) {
+				velY = maxSpeed;
 			}
 		} else {
 			if (velY > 0) {
-				velY -= SPEED;
+				velY -= speed ;
 			} else if (velY < 0) {
-				velY += SPEED;
+				velY += speed ;
 			}
-			if (velY <= 0.0001 && velY >= -0.0001) {
+			if (velY <= 0.0001  && velY >= -0.0001 ) {
 				velY = 0;
 			}
 		}
 		if (directionY != 0 || velY != 0) {
 			if (velY != 0) {
-				yy += velY;
+				yy += velY ;
 				y = (int) yy;
 			}
 		}
@@ -77,11 +79,11 @@ public class Camera extends UIObject {
 				zoomSpeed = 0;
 				zoom = 0.1F;
 			}
-			zoom += zoomSpeed;
+			zoom += zoomSpeed * delta;
 			if (zoomSpeed > 0.0F) {
-				zoomSpeed -= 0.001F;
+				zoomSpeed -= 0.001F ;
 			} else {
-				zoomSpeed += 0.001F;
+				zoomSpeed += 0.001F ;
 			}
 			if (zoomSpeed <= 0.0001 && zoomSpeed >= -0.0001) {
 				zoomSpeed = 0;

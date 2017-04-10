@@ -26,7 +26,7 @@ public class LoadState extends GameState {
 	@Override
 	public void init() {
 		if (uiObjectList.size() == 0) {
-			addUiObject(new TWindow(0, 0, Game.WIDTH - 3, Game.HEIGHT - 3, true));
+			addUiObject(new TWindow(0, 0, Game.WIDTH - 3, Game.HEIGHT - 3, true, ""));
 			addUiObject(new TText(20, 20, 200, 100, true, "Loading"));
 			/*addUiObject(new TButton(Game.WIDTH/2 - 100, Game.HEIGHT/2 + 100, 200, 60, true, "Quit") {
 
@@ -44,9 +44,9 @@ public class LoadState extends GameState {
 	}
 
 	@Override
-	public void tick() {
-		getHandler().tick();
-		getUiHandler().tick();
+	public void tick(final double delta) {
+		getHandler().tick(delta);
+		getUiHandler().tick(delta);
 	}
 
 	@Override

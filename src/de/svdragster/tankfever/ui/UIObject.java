@@ -18,7 +18,8 @@ public abstract class UIObject {
 		this.visible = visible;
 	}
 
-	public abstract void tick();
+	public abstract void tick(double delta);
+
 	public abstract void render(Graphics g);
 
 	public int getX() {

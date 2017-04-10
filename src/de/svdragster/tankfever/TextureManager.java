@@ -99,7 +99,7 @@ public class TextureManager {
 			System.exit(1);
 		}
 		if (Game.getInstance().getGameState().getType() == GameStateType.Load) {
-			Game.getInstance().changeState(GameStateType.Map);
+			Game.getInstance().changeState(GameStateType.Play);
 		}
 	}
 

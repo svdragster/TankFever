@@ -49,9 +49,9 @@ public class MenuState extends GameState {
 	}
 
 	@Override
-	public void tick() {
-		getHandler().tick();
-		getUiHandler().tick();
+	public void tick(final double delta) {
+		getHandler().tick(delta);
+		getUiHandler().tick(delta);
 	}
 
 	@Override

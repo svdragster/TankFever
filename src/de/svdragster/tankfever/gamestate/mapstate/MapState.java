@@ -29,7 +29,7 @@ public class MapState extends GameState {
 	@Override
 	public void init() {
 		if (uiObjectList.size() == 0) {
-			final EditingWindow window = new EditingWindow(Game.WIDTH, 0, 200, Game.HEIGHT - 28, true);
+			final EditingWindow window = new EditingWindow(Game.WIDTH, 0, 200, Game.HEIGHT - 28, true, "Editing");
 			final TButton button = new TButton(window.getX() - 45, window.getY() + window.getH()/2 - 45, 50, 90, true, "<") {
 				@Override
 				public void onClick() {
@@ -79,9 +79,9 @@ public class MapState extends GameState {
 	}
 
 	@Override
-	public void tick() {
-		getHandler().tick();
-		getUiHandler().tick();
+	public void tick(final double delta) {
+		getHandler().tick(delta);
+		getUiHandler().tick(delta);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ public enum GameObjectType {
 	Enemy(),
 	Polygon(),
 	Unit(),
-	Debug();
+	Building(),
+	Debug()
 
 }

@@ -1,7 +1,11 @@
 package de.svdragster.tankfever;
 
+import de.svdragster.tankfever.building.BuildingManager;
+import de.svdragster.tankfever.building.BuildingType;
+import de.svdragster.tankfever.building.Headquarter;
 import de.svdragster.tankfever.entities.DebugText;
 import de.svdragster.tankfever.entities.GameObject;
+import de.svdragster.tankfever.entities.GameObjectType;
 import de.svdragster.tankfever.gamestate.GameState;
 import de.svdragster.tankfever.gamestate.GameStateType;
 import de.svdragster.tankfever.gamestate.LoadState;
@@ -41,6 +45,8 @@ public class Game extends Canvas implements Runnable {
 	private UnitManager unitManager;
 	private static TextureManager textureManager = new TextureManager();
 	private SoundManager soundManager;
+	
+	private BuildingManager buildingManager;
 
 	public static int selection = 3;
 	private static GameObject selectionObject = null;
@@ -91,6 +97,11 @@ public class Game extends Canvas implements Runnable {
 		for (GameObject gameObject : handler.getObjects()) {
 			gameObject.setSelected(false);
 		}
+		
+		buildingManager = new BuildingManager();
+		
+		final Headquarter headquarter = new Headquarter(200, 200, 70, 50, GameObjectType.Building, null, BuildingType.Headquarter);
+		getHandler().addObject(headquarter);
 
 		//handler.addObject(new Player(0, 10, 32, 32, GameObjectType.Player));
 	}
@@ -112,37 +123,41 @@ public class Game extends Canvas implements Runnable {
 
 	@Override
 	public void run() {
+		while (!finishedStartup) {
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		long lastTime = System.nanoTime();
-		final double amountOfTicks = 60.0;
+		final double amountOfTicks = 80.0;
 		final double ns = 1_000_000_000 / amountOfTicks;
 		double delta = 0;
-		//long timer = System.currentTimeMillis();
-		//int frames = 0;
+		long timer = System.currentTimeMillis();
+		int frames = 0;
 
 		//////////////////
 		// de.svdragster.tankfever.Game Loop Start
 		//////////////////
 
 		while (running) {
-
 			long now = System.nanoTime();
-			delta += (now - lastTime) / ns;
+			delta += ((double) now - (double) lastTime) / ns;
 			lastTime = now;
-			while (delta >= 1) {
-				tick();
-				delta--;
+			while (delta >= 0.3) {
+				tick(0.3);
+				delta -= 0.3;
 			}
-			//if (running) {
-				//render();
-			//}
-			/*frames++;
+			render();
 
+			frames++;
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
 				//System.out.println("FPS --> " + frames);
 				lastFrames = frames;
 				frames = 0;
-			}*/
+			}
 		}
 
 		//////////////////
@@ -152,8 +167,8 @@ public class Game extends Canvas implements Runnable {
 		stop();
 	}
 
-	private void tick() {
-		gameState.tick();
+	private void tick(final double delta) {
+		gameState.tick(delta);
 	}
 
 	public void render() {
@@ -296,5 +311,9 @@ public class Game extends Canvas implements Runnable {
 
 	public SoundManager getSoundManager() {
 		return soundManager;
+	}
+	
+	public BuildingManager getBuildingManager() {
+		return buildingManager;
 	}
 }

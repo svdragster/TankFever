@@ -16,7 +16,7 @@ public class Unit extends GameObject {
 	private double lastVectorX = 0;
 	private double lastVectorY = 0;
 	private double rotation = 0;
-	private int gx, gy;
+	private double gx, gy;
 
 
 	public Unit(double x, double y, int w, int h, GameObjectType type) {
@@ -25,9 +25,9 @@ public class Unit extends GameObject {
 	}
 
 	@Override
-	public void tick() {
-		gx = (int) ((getX()) * Game.camera.getZoom() - Game.camera.getX());
-		gy = (int) ((getY()) * Game.camera.getZoom() - Game.camera.getY());
+	public void tick(final double delta) {
+		//gx = ((getX()) * Game.camera.getZoom() - Game.camera.getX());
+		//gy = ((getY()) * Game.camera.getZoom() - Game.camera.getY());
 		if (destination == null) {
 			return;
 		}
@@ -52,8 +52,8 @@ public class Unit extends GameObject {
 			destination = null;
 			return;
 		}
-		x += lastVectorX;
-		y += lastVectorY;
+		x += lastVectorX * delta;
+		y += lastVectorY * delta;
 
 	}
 
@@ -61,8 +61,8 @@ public class Unit extends GameObject {
 	public boolean render(Graphics2D g) {
 		int x = (int) ((getX()) * Game.camera.getZoom() - Game.camera.getX());
 		int y = (int) ((getY()) * Game.camera.getZoom() - Game.camera.getY());
-		//int x = gx;
-		//int y = gy;
+		//int x = (int) gx;
+		//int y = (int) gy;
 		if (x < -w || y < -h) {
 			return false;
 		} else if (x + w > Game.WIDTH || y + h > Game.HEIGHT) {

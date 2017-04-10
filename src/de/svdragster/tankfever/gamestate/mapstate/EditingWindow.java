@@ -17,16 +17,16 @@ public class EditingWindow extends TWindow {
 	private double xx = 0;
 	private double velX;
 
-	public EditingWindow(int x, int y, int w, int h, boolean visible) {
-		super(x, y, w, h, visible);
+	public EditingWindow(int x, int y, int w, int h, boolean visible, String title) {
+		super(x, y, w, h, visible, title);
 		this.xx = 0;
 	}
 
 	@Override
-	public void tick() {
+	public void tick(final double delta) {
 		if (expanded) {
 			if (xx < w) {
-				xx += 8;
+				xx += 8 * delta;
 				x = Game.WIDTH - (int) xx;
 				hideButton.setX(x - 45);
 				updateButtons(x);
@@ -38,7 +38,7 @@ public class EditingWindow extends TWindow {
 			}
 		} else {
 			if (xx > 0) {
-				xx -= 8;
+				xx -= 8 * delta;
 				x = Game.WIDTH - (int) xx;
 				hideButton.setX(x - 45);
 				updateButtons(x);

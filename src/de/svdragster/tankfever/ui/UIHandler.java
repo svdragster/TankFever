@@ -42,10 +42,13 @@ public class UIHandler {
 		}
 	}
 
-	public synchronized void tick() {
+	public synchronized void tick(final double delta) {
 		LinkedList<UIObject> tempObjects = new LinkedList<>();
 		tempObjects.addAll(getObjects());
-		tempObjects.forEach(UIObject::tick);
+		for (UIObject uiObject : tempObjects) {
+			uiObject.tick(delta);
+		}
+		//tempObjects.forEach(UIObject::tick);
 	}
 
 	public UIObject getInAABB(int x, int y) {

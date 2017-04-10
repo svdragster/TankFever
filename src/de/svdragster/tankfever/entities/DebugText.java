@@ -18,7 +18,7 @@ public class DebugText extends UIObject {
 	}
 
 	@Override
-	public void tick() {
+	public void tick(final double delta) {
 
 	}
 

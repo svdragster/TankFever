@@ -18,7 +18,7 @@ public class Handler {
 	private LinkedList<Building> buildings = new LinkedList<>();
 
 	public Handler() {
-		int max = 5_000;
+		int max = 500;
 		double amount = Math.sqrt(max);
 		int x = 0;
 		int y = 0;
@@ -33,33 +33,33 @@ public class Handler {
 
 	}
 
-	public void tick() {
-		for (GameObject gameObject : objects) {
-			gameObject.tick();
-
-		}
-		objects.forEach(GameObject::tick);
-	}
-
-	public synchronized void render(final Graphics2D g) {
-		LinkedList<GameObject> tempObjects = new LinkedList<>();
-		tempObjects.addAll(objects);
-
+	public void tick(final double delta) {
 		final boolean selection = Game.getInstance().mouseInput.getMouseHold() != 0;
-		int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
 		if (selection) {
-			x1 = (int) ((Game.getInstance().mouseInput.getMouseHoldPos().getX() + Game.camera.getX()) / Game.camera.getZoom());
-			y1 = (int) ((Game.getInstance().mouseInput.getMouseHoldPos().getY() + Game.camera.getY()) / Game.camera.getZoom());
-			x2 = (int) ((Game.getInstance().mouseInput.getMouseHoldStartPos().getX() + Game.camera.getX()) / Game.camera.getZoom());
-			y2 = (int) ((Game.getInstance().mouseInput.getMouseHoldStartPos().getY() + Game.camera.getY()) / Game.camera.getZoom());
-		}
-		for (GameObject gameObject : tempObjects) {
-			gameObject.render(g);
-			if (selection) {
+			int x1 = (int) ((Game.getInstance().mouseInput.getMouseHoldPos().getX() + Game.camera.getX()) / Game.camera.getZoom());
+			int y1 = (int) ((Game.getInstance().mouseInput.getMouseHoldPos().getY() + Game.camera.getY()) / Game.camera.getZoom());
+			int x2 = (int) ((Game.getInstance().mouseInput.getMouseHoldStartPos().getX() + Game.camera.getX()) / Game.camera.getZoom());
+			int y2 = (int) ((Game.getInstance().mouseInput.getMouseHoldStartPos().getY() + Game.camera.getY()) / Game.camera.getZoom());
+			for (GameObject gameObject : objects) {
+				gameObject.tick(delta);
 				if (gameObject instanceof Unit) {
 					gameObject.setSelected(isInAABB(gameObject, x1, y1, x2, y2));
 				}
 			}
+		} else {
+			for (GameObject gameObject : objects) {
+				gameObject.tick(delta);
+			}
+		}
+	}
+
+	public synchronized void render(final Graphics2D g) {
+
+		LinkedList<GameObject> tempObjects = new LinkedList<>();
+		tempObjects.addAll(objects);
+
+		for (GameObject gameObject : tempObjects) {
+			gameObject.render(g);
 		}
 	}
 

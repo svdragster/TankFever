@@ -54,7 +54,7 @@ public class TankPolygon extends GameObject {
 	}
 
 	@Override
-	public void tick() {
+	public void tick(final double delta) {
 		if (System.currentTimeMillis() - animationTime >= 300) {
 			if (animationDirection > 0) {
 				animation++;

@@ -17,7 +17,7 @@ public class TText extends UIObject {
 	}
 
 	@Override
-	public void tick() {
+	public void tick(final double delta) {
 
 	}
 

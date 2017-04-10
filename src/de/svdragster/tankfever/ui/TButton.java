@@ -9,23 +9,26 @@ public class TButton extends UIObject {
 
 	Font font;
 	String text = "null";
+	String originalText = "null";
 	boolean shadowRect = true;
 	boolean shadowFont = true;
 
 	public TButton(int x, int y, int w, int h, boolean visible, String text) {
 		super(x, y, w, h, visible);
 		this.text = text;
+		this.originalText = text;
 		this.font = new Font("Impact", 1, 30);
 	}
 
 	public TButton(int x, int y, int w, int h, boolean visible, String text, int fontSize) {
 		super(x, y, w, h, visible);
 		this.text = text;
+		this.originalText = text;
 		this.font = new Font("Impact", 1, fontSize);
 	}
 
 	@Override
-	public void tick() {
+	public void tick(final double delta) {
 
 	}
 
@@ -75,5 +78,13 @@ public class TButton extends UIObject {
 
 	public void setShadowFont(boolean shadowFont) {
 		this.shadowFont = shadowFont;
+	}
+
+	public String getOriginalText() {
+		return originalText;
+	}
+
+	public void setOriginalText(String originalText) {
+		this.originalText = originalText;
 	}
 }

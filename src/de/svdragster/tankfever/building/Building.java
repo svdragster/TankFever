@@ -18,7 +18,7 @@ public abstract class Building extends GameObject {
 		this.tribeOwner = tribeOwner;
 		this.buildingType = buildingType;
 	}
-
+	
 	public Tribe getTribeOwner() {
 		return tribeOwner;
 	}
@@ -42,4 +42,5 @@ public abstract class Building extends GameObject {
 	public void setShadow(Shadow shadow) {
 		this.shadow = shadow;
 	}
+	
 }

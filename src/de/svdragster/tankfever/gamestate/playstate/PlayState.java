@@ -1,7 +1,8 @@
 package de.svdragster.tankfever.gamestate.playstate;
 
 import de.svdragster.tankfever.Game;
-import de.svdragster.tankfever.entities.polygons.TerrainType;
+import de.svdragster.tankfever.building.BuildingManager;
+import de.svdragster.tankfever.building.BuildingType;
 import de.svdragster.tankfever.gamestate.GameState;
 import de.svdragster.tankfever.gamestate.GameStateType;
 import de.svdragster.tankfever.ui.TButton;
@@ -18,8 +19,8 @@ import java.util.List;
  */
 public class PlayState extends GameState {
 	
-	private List<SidebarButton> sidebarButtons = new ArrayList<>();
-	private List<SidebarWindow> sidebarWindows = new ArrayList<>();
+	private static List<SidebarButton> sidebarButtons = new ArrayList<>();
+	private static List<SidebarWindow> sidebarWindows = new ArrayList<>();
 
 	public PlayState(GameStateType type) {
 		super(type);
@@ -34,7 +35,10 @@ public class PlayState extends GameState {
 
 	@Override
 	public void init() {
-		if (uiObjectList.size() == 0) {
+		sidebarWindows.clear();
+		sidebarWindows.clear();
+		uiObjectList.clear();
+		//if (uiObjectList.size() == 0) {
 			final TWindow sidebarWindow = new TWindow(Game.WIDTH - 70, 0, 67, Game.HEIGHT - 27, true, "");
 			addUiObject(sidebarWindow);
 			final UnitWindow windowUnits = new UnitWindow(Game.WIDTH, 0, 300, Game.HEIGHT - 28, true, "Units", MenuType.UNITS);
@@ -53,16 +57,18 @@ public class PlayState extends GameState {
 					windowUnits.toggleExpansion();
 				}
 			};
-			windowBuild.getButtons().add((TButton) addUiObject(new TTextureButton(windowBuild.getX(), windowBuild.getY() + windowBuild.getH()/2 - 45, 50, 50, true, "ABC", 18, Game.getTextureManager().getTxSandGrass()) {
+			windowBuild.getButtons().add((TButton) addUiObject(new TTextureButton(windowBuild.getX(), windowBuild.getY() + windowBuild.getH()/2 - 45, 90, 110, true, "Barracks", 18, Game.getTextureManager().getTxSandGrass()) {
 				@Override
 				public void onClick() {
-					Game.getTextureManager().setSelectedTerrainType(TerrainType.GRASS_SAND);
+					BuildingManager.currentlyBuilding = BuildingType.Barracks;
+					windowBuild.toggleExpansion();
+					System.out.println("clicked barracks");
 				}
 			}));
-			windowBuild.getButtons().add((TButton) addUiObject(new TTextureButton(windowBuild.getX(), windowBuild.getY() + windowBuild.getH()/2 - 45, 50, 50, true, "DEF", 18, Game.getTextureManager().getTxWater()[0]) {
+			windowBuild.getButtons().add((TButton) addUiObject(new TTextureButton(windowBuild.getX(), windowBuild.getY() + windowBuild.getH()/2 - 45, 90, 110, true, "DEF", 18, Game.getTextureManager().getTxWater()[0]) {
 				@Override
 				public void onClick() {
-					Game.getTextureManager().setSelectedTerrainType(TerrainType.RIVER);
+					windowBuild.toggleExpansion();
 				}
 			}));
 
@@ -86,11 +92,11 @@ public class PlayState extends GameState {
 			sidebarButtons.add(buttonUnits);
 			sidebarWindows.add(windowBuild);
 			sidebarWindows.add(windowUnits);
-		} else {
+		/*} else {
 			for (UIObject uiObject : getUiObjectList()) {
 				uiObject.setVisible(true);
 			}
-		}
+		}*/
 	}
 
 	@Override
@@ -105,7 +111,7 @@ public class PlayState extends GameState {
 		getUiHandler().render(g);
 	}
 	
-	public void toggleAllButtonsExcept(MenuType menuType) {
+	public static void toggleAllButtonsExcept(MenuType menuType) {
 		for (SidebarButton sidebarButton: sidebarButtons) {
 			if (sidebarButton.getMenuType() != menuType) {
 				sidebarButton.setVisible(!sidebarButton.isVisible());
@@ -113,13 +119,33 @@ public class PlayState extends GameState {
 		}
 	}
 	
-	public void hideAllWindowsExcept(MenuType menuType) {
+	public static void hideAllWindowsExcept(MenuType menuType) {
 		for (SidebarWindow window : sidebarWindows) {
 			if (window.getMenuType() != menuType) {
 				//window.setVisible(!window.isVisible());
 				if (window.isExpanded()) {
 					window.toggleExpansion();
 				}
+			}
+		}
+	}
+	
+	public static void toggleWindow(MenuType menuType, boolean expand) {
+		if (expand) {
+			hideAllWindowsExcept(menuType);
+		}
+		for (SidebarWindow window : sidebarWindows) {
+			if (window.getMenuType() == menuType) {
+				if (expand) {
+					if (!window.isExpanded()) {
+						window.toggleExpansion();
+					}
+				} else {
+					if (window.isExpanded()) {
+						window.toggleExpansion();
+					}
+				}
+				return;
 			}
 		}
 	}

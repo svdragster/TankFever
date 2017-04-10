@@ -2,8 +2,6 @@ package de.svdragster.tankfever.building;
 
 import de.svdragster.tankfever.Game;
 import de.svdragster.tankfever.entities.GameObjectType;
-import de.svdragster.tankfever.gamestate.playstate.MenuType;
-import de.svdragster.tankfever.gamestate.playstate.PlayState;
 import de.svdragster.tankfever.tribes.Tribe;
 
 import java.awt.*;
@@ -11,10 +9,10 @@ import java.awt.*;
 /**
  * Created by Sven on 01.04.2017.
  */
-public class Headquarter extends Building {
+public class Barracks extends Building {
 
 
-	public Headquarter(double x, double y, int w, int h, GameObjectType type, Tribe tribeOwner, BuildingType buildingType) {
+	public Barracks(double x, double y, int w, int h, GameObjectType type, Tribe tribeOwner, BuildingType buildingType) {
 		super(x, y, w, h, type, tribeOwner, buildingType);
 		setShadow(new Shadow(new int[]{0, 0, 0, 0, 0}, new int[]{0, 0, 0, 0, 0}));
 	}
@@ -23,7 +21,17 @@ public class Headquarter extends Building {
 	public void tick(double delta) {
 
 	}
-
+	
+	@Override
+	public void onSelect() {
+	
+	}
+	
+	@Override
+	public void onDeselect() {
+	
+	}
+	
 	@Override
 	public boolean render(Graphics2D g) {
 		int x = (int) ((getX()) * Game.camera.getZoom() - Game.camera.getX());
@@ -34,7 +42,7 @@ public class Headquarter extends Building {
 			shadowY = (int) ((getY() + 3) * Game.camera.getZoom() - Game.camera.getY());
 		}*/
 		switch (getBuildingType()) {
-			case Headquarter:
+			case Barracks:
 				//int x = (int) gx;
 				//int y = (int) gy;
 				if (x < -w || y < -h) {
@@ -80,16 +88,4 @@ public class Headquarter extends Building {
 		}
 		return true;
 	}
-	
-	@Override
-	public void onSelect() {
-		PlayState.toggleWindow(MenuType.BUILD, true);
-		System.out.println("select");
-	}
-	
-	@Override
-	public void onDeselect() {
-		PlayState.toggleWindow(MenuType.BUILD, false);
-	}
-	
 }

@@ -42,7 +42,7 @@ public class Handler {
 			int y2 = (int) ((Game.getInstance().mouseInput.getMouseHoldStartPos().getY() + Game.camera.getY()) / Game.camera.getZoom());
 			for (GameObject gameObject : objects) {
 				gameObject.tick(delta);
-				if (gameObject instanceof Unit) {
+				if (gameObject instanceof Unit || gameObject instanceof Building) {
 					gameObject.setSelected(isInAABB(gameObject, x1, y1, x2, y2));
 				}
 			}

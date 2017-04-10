@@ -1,10 +1,14 @@
 package de.svdragster.tankfever;
 
+import de.svdragster.tankfever.building.BuildingManager;
+import de.svdragster.tankfever.building.BuildingType;
 import de.svdragster.tankfever.entities.GameObject;
 import de.svdragster.tankfever.entities.GameObjectType;
 import de.svdragster.tankfever.entities.Player;
 import de.svdragster.tankfever.entities.polygons.TankPolygon;
 import de.svdragster.tankfever.gamestate.GameStateType;
+import de.svdragster.tankfever.gamestate.playstate.MenuType;
+import de.svdragster.tankfever.gamestate.playstate.PlayState;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -87,6 +91,11 @@ public class KeyInput extends KeyAdapter {
 				Game.getInstance().changeState(GameStateType.Menu);
 			}
 		} else if (key == KeyEvent.VK_BACK_SPACE) {
+			if (BuildingManager.currentlyBuilding != BuildingType.None) {
+				BuildingManager.currentlyBuilding = BuildingType.None;
+				PlayState.toggleWindow(MenuType.BUILD, true);
+			}
+			
 			if (Game.getSelectionObject() != null && Game.getSelectionObject() instanceof TankPolygon) {
 				final TankPolygon polygon = (TankPolygon) Game.getSelectionObject();
 				if (polygon.getVertx().size() == 0) {

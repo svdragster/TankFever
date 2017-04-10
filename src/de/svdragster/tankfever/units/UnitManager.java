@@ -21,8 +21,7 @@ public class UnitManager {
 	}
 
 	public void moveSelectedUnits(int x, int y) {
-		game.getUiHandler().addObject(new MoveUnitAnimation(x, y, 30, 30, true));
-		Queue<Unit> selectedUnits = new LinkedList<>();
+		final Queue<Unit> selectedUnits = new LinkedList<>();
 		for (GameObject gameObject : game.getHandler().getObjects()) {
 			if (gameObject.isSelected()) {
 				if (gameObject instanceof Unit) {
@@ -30,6 +29,10 @@ public class UnitManager {
 				}
 			}
 		}
+		if (selectedUnits.size() == 0) {
+			return;
+		}
+		game.getUiHandler().addObject(new MoveUnitAnimation(x, y, 30, 30, true));
 		int amount = (int) Math.sqrt(selectedUnits.size()) + 1;
 		int row = -amount/2, col = -amount/2;
 		for (Unit unit : selectedUnits) {

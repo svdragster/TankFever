@@ -2,10 +2,8 @@ package de.svdragster.tankfever;
 
 import de.svdragster.tankfever.building.BuildingManager;
 import de.svdragster.tankfever.building.BuildingType;
-import de.svdragster.tankfever.building.Headquarter;
 import de.svdragster.tankfever.entities.DebugText;
 import de.svdragster.tankfever.entities.GameObject;
-import de.svdragster.tankfever.entities.GameObjectType;
 import de.svdragster.tankfever.gamestate.GameState;
 import de.svdragster.tankfever.gamestate.GameStateType;
 import de.svdragster.tankfever.gamestate.LoadState;
@@ -18,6 +16,8 @@ import de.svdragster.tankfever.units.UnitManager;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -100,8 +100,9 @@ public class Game extends Canvas implements Runnable {
 		
 		buildingManager = new BuildingManager();
 		
-		final Headquarter headquarter = new Headquarter(200, 200, 70, 50, GameObjectType.Building, null, BuildingType.Headquarter);
-		getHandler().addObject(headquarter);
+		//final Headquarter headquarter = new Headquarter(200, 200, 70, 50, GameObjectType.Building, null, BuildingType.Headquarter);
+		//getHandler().addObject(headquarter);
+		BuildingManager.build(200, 200, 70, 50, null, BuildingType.Headquarter);
 
 		//handler.addObject(new Player(0, 10, 32, 32, GameObjectType.Player));
 	}
@@ -210,24 +211,31 @@ public class Game extends Canvas implements Runnable {
 		bs.show();
 	}
 
+	private Map<GameStateType, GameState> gameStates = new HashMap<>();
+	
 	public void changeState(final GameStateType type) {
 		if (gameState != null) {
 			lastGameState = gameState.getType();
 			gameState.vanish();
 		}
-		switch (type) {
-			case Menu:
-				gameState = new MenuState(type);
-				break;
-			case Play:
-				gameState = new PlayState(type);
-				break;
-			case Map:
-				gameState = new MapState(type);
-				break;
-			case Load:
-				gameState = new LoadState(type);
-				break;
+		if (gameStates.containsKey(type)) {
+			gameState = gameStates.get(type);
+		} else {
+			switch (type) {
+				case Menu:
+					gameState = new MenuState(type);
+					break;
+				case Play:
+					gameState = new PlayState(type);
+					break;
+				case Map:
+					gameState = new MapState(type);
+					break;
+				case Load:
+					gameState = new LoadState(type);
+					break;
+			}
+			gameStates.put(type, gameState);
 		}
 		gameState.init();
 	}

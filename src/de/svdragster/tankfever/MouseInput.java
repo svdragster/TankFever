@@ -1,9 +1,13 @@
 package de.svdragster.tankfever;
 
+import de.svdragster.tankfever.building.BuildingManager;
+import de.svdragster.tankfever.building.BuildingType;
 import de.svdragster.tankfever.entities.GameObject;
 import de.svdragster.tankfever.entities.GameObjectType;
 import de.svdragster.tankfever.entities.Player;
-import de.svdragster.tankfever.entities.polygons.*;
+import de.svdragster.tankfever.entities.polygons.TankPolygon;
+import de.svdragster.tankfever.gamestate.playstate.MenuType;
+import de.svdragster.tankfever.gamestate.playstate.PlayState;
 import de.svdragster.tankfever.ui.TButton;
 import de.svdragster.tankfever.ui.UIHandler;
 import de.svdragster.tankfever.ui.UIObject;
@@ -47,6 +51,11 @@ public class MouseInput extends MouseAdapter {
 			if (clickedObject != null) {
 				clickedObject.setSelected(true);
 			} else {
+				if (BuildingManager.currentlyBuilding == BuildingType.Barracks) {
+					System.out.println("building barracks");
+					BuildingManager.currentlyBuilding = BuildingType.None;
+					BuildingManager.build(x, y, 60, 30, null, BuildingType.Barracks);
+				}
 				if (Game.selection == 1) {
 					handler.addObject(new Player(x - 8, y - 8, 16, 16, GameObjectType.Player));
 				} else if (Game.selection == 2) {
@@ -72,6 +81,10 @@ public class MouseInput extends MouseAdapter {
 				}
 			}
 		} else if (click == MouseEvent.BUTTON3) {
+			if (BuildingManager.currentlyBuilding != BuildingType.None) {
+				BuildingManager.currentlyBuilding = BuildingType.None;
+				PlayState.toggleWindow(MenuType.BUILD, true);
+			}
 			if (Game.selection == 3) {
 				Game.getInstance().getUnitManager().moveSelectedUnits(x, y);
 			} else {

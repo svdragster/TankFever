@@ -1,5 +1,7 @@
 package de.svdragster.tankfever.entities;
 
+import de.svdragster.tankfever.building.Building;
+
 import java.awt.*;
 
 /**
@@ -24,7 +26,15 @@ public abstract class GameObject {
 
 	public abstract void tick(final double delta);
 	public abstract boolean render(Graphics2D g);
-
+	
+	public void onSelect() {
+	
+	}
+	
+	public void onDeselect() {
+	
+	}
+	
 	public double getX() {
 		return x;
 	}
@@ -91,6 +101,14 @@ public abstract class GameObject {
 	}
 
 	public void setSelected(boolean selected) {
+		if (this instanceof Building) {
+			final Building building = (Building) this;
+			if (!this.selected && selected) {
+				building.onSelect();
+			} else if (this.selected && !selected){
+				building.onDeselect();
+			}
+		}
 		this.selected = selected;
 	}
 

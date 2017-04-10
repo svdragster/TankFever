@@ -66,10 +66,10 @@ public class TWindow extends UIObject{
 		int r, c;
 		for (int i=0; i<getButtons().size(); i++) {
 			final TButton button = getButtons().get(i);
-			r = i/3;
-			c = i%3;
-			button.setX(12 + x + c*60);
-			button.setY(50 + r*60);
+			r = i/2;
+			c = i%2;
+			button.setX(12 + x + c*100);
+			button.setY(50 + r*120);
 		}
 	}
 }

@@ -5,6 +5,8 @@ package de.svdragster.tankfever.building;
  */
 public enum BuildingType {
 
-	Headquarter
+	None,
+	Headquarter,
+	Barracks
 
 }

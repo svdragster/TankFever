@@ -27,7 +27,7 @@ public class Game extends Canvas implements Runnable {
 
 	private static Game instance;
 
-	public static final int WIDTH = 1600;
+	public static final int WIDTH = 1200;
 	public static final int HEIGHT = WIDTH / 16 * 9;
 
 	public static int lastFrames = 0;
@@ -139,7 +139,7 @@ public class Game extends Canvas implements Runnable {
 		int frames = 0;
 
 		//////////////////
-		// de.svdragster.tankfever.Game Loop Start
+		// Game Loop Start
 		//////////////////
 
 		while (running) {
